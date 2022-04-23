@@ -2,9 +2,9 @@
   "name": "group_24_cs546",
   "version": "0.0.1",
   "description": "Boom app",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,7 +21,13 @@
   },
   "homepage": "https://github.com/GABudhrani/group_24_CS546#readme",
   "dependencies": {
+    "ejs": "^3.1.7",
     "express": "^4.17.3",
-    "socket.io": "^4.4.1"
+    "peer": "^0.6.1",
+    "socket.io": "^4.4.1",
+    "uuid": "^8.3.2"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
