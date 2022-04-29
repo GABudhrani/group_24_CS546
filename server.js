@@ -37,4 +37,4 @@ io.on("connection", (socket) => {
     });
 });
 
-server.listen(process.env.PORT || 4443);
+server.listen(process.env.PORT || 443);
