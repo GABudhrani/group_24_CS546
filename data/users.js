@@ -3,7 +3,7 @@ const users = mongoCollections.users;
 const { ObjectId } = require('mongodb');
 const { json } = require('express');
 const bcrypt = require('bcrypt');
-const saltRounds = 16;
+const saltRounds = 14;
 
 let exportedMethods = {
 
