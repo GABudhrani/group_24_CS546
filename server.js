@@ -1,3 +1,4 @@
+// const { addUser, removeUser, getUser, getUsersInRoom } = require("./users");
 const express = require("express");
 const app = express();
 const server = require("http").Server(app);
@@ -23,18 +24,18 @@ app.get("/", (req, res) => {
 app.get("/:room", (req, res) => {
     res.render("room", { roomId: req.params.room });
 });
-
+// io.connect(url, { transports: ["websocket"] });
 io.on("connection", (socket) => {
     socket.on("join-room", (roomId, userId, userName) => {
         socket.join(roomId);
-        socket.to(roomId).broadcast.emit("user-connected", userId);
+        socket.to(roomId).emit("user-connected", userId);
         socket.on("message", (message) => {
             io.to(roomId).emit("createMessage", message, userName);
         });
-        socket.on("disconnect", () => {
-            socket.to(roomId).broadcast.emit("user-disconnected", userId);
+        socket.on("disconnecting", (reason) => {
+            socket.to(roomId).emit("user-disconnected", userId);
         });
     });
 });
-
+// io.listen(443);
 server.listen(process.env.PORT || 443);

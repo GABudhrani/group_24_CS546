@@ -1,4 +1,6 @@
-const socket = io("/");
+const socket = io("/", {
+    transports: ["polling"],
+});
 const videoGrid = document.getElementById("video-grid");
 const myVideo = document.createElement("video");
 const showChat = document.querySelector("#showChat");
@@ -40,6 +42,7 @@ navigator.mediaDevices
         peer.on("call", (call) => {
             call.answer(stream);
             const video = document.createElement("video");
+            video.setAttribute("id", call.peer);
             call.on("stream", (userVideoStream) => {
                 addVideoStream(video, userVideoStream);
             });
@@ -47,7 +50,6 @@ navigator.mediaDevices
 
         socket.on("user-connected", (userId) => {
             connectToNewUser(userId, stream);
-            alert("user joined" + userId);
         });
         socket.on("user-disconnected", (userId) => {
             alert("user disconnected ss" + userId);
@@ -56,16 +58,12 @@ navigator.mediaDevices
     });
 const removeuser = (userId, stream) => {
     const call = peer.call(userId, stream);
-    video.remove();
-    // const video = document.removeChild("video");
-    // call.on("stream", (userVideoStream) => {
-    //     alert("user disconnected1" + userId);
-    //     removeVideoStream(video, userVideoStream);
-    // });
+    document.getElementById(call.peer).remove();
 };
 const connectToNewUser = (userId, stream) => {
     const call = peer.call(userId, stream);
     video = document.createElement("video");
+    video.setAttribute("id", call.peer);
     call.on("stream", (userVideoStream) => {
         addVideoStream(video, userVideoStream);
     });
@@ -73,17 +71,10 @@ const connectToNewUser = (userId, stream) => {
 
 peer.on("open", (id) => {
     socket.emit("join-room", ROOM_ID, id, user);
-    alert(id);
-    alert(user);
 });
 
 const removeVideoStream = (video, stream) => {
     alert(video + "user disconnected final");
-    // video.srcObject = stream;
-    // video.addEventListener("loadedmetadata", () => {
-    //     video.play();
-    //     videoGrid.append(video);
-    // });
 };
 const addVideoStream = (video, stream) => {
     video.srcObject = stream;
