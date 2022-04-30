@@ -1,15 +1,7 @@
-const signUpRoutes = require('./signup');
-const loginRoutes = require('./login');
+const userRoutes = require('./users');
 
 const constructorMethod = (app) => {
-    // app.use('/', userRoutes);
-    app.use('/signup', signUpRoutes);
-    app.use('/login', loginRoutes);
-
-    app.use('/logout', (req, res) => {
-        req.session.destroy();
-        res.render('users/login');
-    });
+    app.use('/', userRoutes);
 
     app.use('*', (req, res) => {
         res.sendStatus(404);
