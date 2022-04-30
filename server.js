@@ -39,6 +39,7 @@ const io = require("socket.io")(server, {
         origin: "*",
     },
 });
+
 const { ExpressPeerServer } = require("peer");
 const peerServer = ExpressPeerServer(server, {
     debug: true,
@@ -128,8 +129,3 @@ app.use("/meeting", (req, res, next) => {
 configRoutes(app);
 
 server.listen(process.env.PORT || 443);
-
-// app.listen(4443, () => {
-//     console.log("We've now got a server!");
-//     console.log('Your routes will be running on http://localhost:4443');
-// });
