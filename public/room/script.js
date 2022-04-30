@@ -5,6 +5,7 @@ const videoGrid = document.getElementById("video-grid");
 const myVideo = document.createElement("video");
 const showChat = document.querySelector("#showChat");
 const backBtn = document.querySelector(".header__back");
+const ROOM_ID = document.getElementById("room").getAttribute("data-roomid");
 myVideo.muted = true;
 
 backBtn.addEventListener("click", () => {
@@ -52,7 +53,7 @@ navigator.mediaDevices
             connectToNewUser(userId, stream);
         });
         socket.on("user-disconnected", (userId) => {
-            alert("user disconnected ss" + userId);
+            // alert("user disconnected ss" + userId);
             removeuser(userId, stream);
         });
     });
@@ -61,6 +62,7 @@ const removeuser = (userId, stream) => {
     document.getElementById(call.peer).remove();
 };
 const connectToNewUser = (userId, stream) => {
+    // alert("User Joined" + userId);
     const call = peer.call(userId, stream);
     video = document.createElement("video");
     video.setAttribute("id", call.peer);
@@ -74,7 +76,7 @@ peer.on("open", (id) => {
 });
 
 const removeVideoStream = (video, stream) => {
-    alert(video + "user disconnected final");
+    // alert(video + "user disconnected final");
 };
 const addVideoStream = (video, stream) => {
     video.srcObject = stream;

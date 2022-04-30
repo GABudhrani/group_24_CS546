@@ -1,33 +1,21 @@
-<!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Boom</title>
-  <link rel="stylesheet" href="/public/css/main.css">
-  <link rel="stylesheet" href="/public/css/style.css">
-  <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"
-    integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
-    crossorigin="anonymous"></script>
-  <script src="https://kit.fontawesome.com/c939d0e917.js"></script>
-  <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
-  <script>
-    { { roomId } }
-  </script>
-</head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Boom</title>
+        <link rel="stylesheet" href="/public/css/main.css" />
+        <link rel="stylesheet" href="/public/css/style.css" />
+        <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/c939d0e917.js"></script>
+        <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+    </head>
 
+    <body>
+        <main>
+            {{{body}}}
+        </main>
 
-
-<body>
-  <main>
-    {{{body}}}
-  </main>
-
-
-
-</body>
-
-<script src="/public/room/script.js"></script>
-
+    </body>
+    <script id="room" data-roomid={{roomId}} src="/public/room/script.js"></script>
 </html>
