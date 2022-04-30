@@ -100,15 +100,15 @@ router.post('/login', async (req, res) => {
 
         req.session.user = { username: username };
 
-        res.status(200).redirect('/private');
+        res.status(200).redirect('/home');
     } catch (e) {
         console.log(e)
         res.status(400).render('users/login', { error: e, hasErrors: true });
     }
 });
 
-router.get('/private', async (req, res) => {
-    res.status(200).render('users/private', { "username": req.session.user.username });
+router.get('/home', async (req, res) => {
+    res.status(200).render('users/home', { "username": req.session.user.username });
 });
 
 router.get('/logout', async (req, res) => {
