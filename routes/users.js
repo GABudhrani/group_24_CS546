@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const userData = data.users;
+const { v4: uuidv4 } = require("uuid");
 
 router.get('/', async (req, res) => {
     res.status(200).render('users/login', {});
@@ -118,6 +119,14 @@ router.get('/logout', async (req, res) => {
 
 router.get('/notlogged', async (req, res) => {
     res.status(403).render('users/notlogged');
+});
+
+router.get("/meeting", (req, res) => {
+    res.redirect(`/meeting/${uuidv4()}`);
+  });
+
+router.get('/meeting/:room', async (req, res) => {
+    res.status(200).render("users/room", { roomId: req.params.room });
 });
 
 function hasWhiteSpace(s) {

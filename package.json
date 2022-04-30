@@ -5,6 +5,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
+        "debug": "node --nolazy --debug-brk=5858 myProgram.js",
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "nodemon server.js"
     },

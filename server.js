@@ -71,6 +71,19 @@ app.use(
 app.use("/peerjs", peerServer);
 app.use(express.static("public"));
 
+io.on("connection", (socket) => {
+    socket.on("join-room", (roomId, userId, userName) => {
+        socket.join(roomId);
+        socket.to(roomId).broadcast.emit("user-connected", userId);
+        socket.on("message", (message) => {
+            io.to(roomId).emit("createMessage", message, userName);
+        });
+        socket.on("disconnect", () => {
+            socket.to(roomId).broadcast.emit("user-disconnected", userId);
+        });
+    });
+});
+
 app.use(async (req, res, next) => {
     const now = new Date().toUTCString();
     let userStatus = 'Non-Authenticated User'
@@ -105,32 +118,21 @@ app.use('/home', (req, res, next) => {
     }
 });
 
-// app.get("/", (req, res) => {
-//     res.redirect(`/${uuidv4()}`);
-// });
-
-// app.get("/:room", (req, res) => {
-//     res.render("room", { roomId: req.params.room });
-// });
-
-io.on("connection", (socket) => {
-    socket.on("join-room", (roomId, userId, userName) => {
-        socket.join(roomId);
-        socket.to(roomId).broadcast.emit("user-connected", userId);
-        socket.on("message", (message) => {
-            io.to(roomId).emit("createMessage", message, userName);
-        });
-        socket.on("disconnect", () => {
-            socket.to(roomId).broadcast.emit("user-disconnected", userId);
-        });
-    });
+app.use('/meeting', (req, res, next) => {
+    if (!req.session.user) {
+        return res.redirect('/notlogged');
+    } else {
+        next();
+    }
 });
 
-//server.listen(process.env.PORT || 4443);
+
 
 configRoutes(app);
 
-app.listen(4443, () => {
-    console.log("We've now got a server!");
-    console.log('Your routes will be running on http://localhost:4443');
-});
+server.listen(process.env.PORT || 443);
+
+// app.listen(4443, () => {
+//     console.log("We've now got a server!");
+//     console.log('Your routes will be running on http://localhost:4443');
+// });
