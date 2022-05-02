@@ -5,6 +5,10 @@ const userData = data.users;
 const { v4: uuidv4 } = require("uuid");
 
 router.get("/", async (req, res) => {
+    res.status(200).render("users/firstpage", {});
+});
+
+router.get("/login", async (req, res) => {
     res.status(200).render("users/login", {});
 });
 

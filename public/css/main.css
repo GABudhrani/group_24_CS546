@@ -25,6 +25,19 @@ button {
     cursor: pointer;
     width: 100%;
 }
+.button1 {
+    font-family: cursive;
+    background-color: red;
+    position: relative;
+    color: white;
+    margin-top: 2px;
+    margin-left: 1300px;
+    cursor: pointer;
+    position: relative;
+    width: 10%;
+    padding: 0ch;
+    border-style: none;
+}
 
 button:hover {
     opacity: 0.8;
