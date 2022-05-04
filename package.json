@@ -1,0 +1,24 @@
+{
+    "name": "Group_24",
+    "version": "1.0.0",
+    "description": "Boom",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Girish Amar Budhrani",
+    "license": "ISC",
+    "dependencies": {
+        "nodemon": "^2.0.4",
+        "peer": "^0.5.3",
+        "socket.io": "4.5.0",
+        "uuid": "^8.3.0",
+        "bcryptjs": "^2.4.3",
+        "express": "^4.18.0",
+        "express-handlebars": "^6.0.5",
+        "express-session": "^1.17.2",
+        "cookie-parser": "^1.4.6",
+        "mongodb": "^4.5.0"
+    }
+}
