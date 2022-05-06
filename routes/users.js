@@ -5,29 +5,44 @@ const usersData = require("../data/users");
 const { v4: uuidv4 } = require("uuid");
 
 router.get("/", async (req, res) => {
+    res.render("sub_layout/intro");
+});
+
+router.get("/login", async (req, res) => {
     if (req.session.user) {
         return res.redirect("/home");
     } else {
-        res.render("sub_layout/login", { title: "Login" });
+        res.render("sub_layout/login", { title: "Login", hasErrors: false });
     }
 });
+
+// router.get("/login", async (req, res) => {
+//     if (req.session.user) {
+//         return res.redirect("/");
+//     } else {
+//         res.render("sub_layout/login", { title: "Login", hasErrors: false });
+//     }
+// });
+
 router.get("/home", async (req, res) => {
     if (!req.session.user) {
-        return res.redirect("/");
+        return res.redirect("/login");
     } else {
         res.status(200).render("sub_layout/home", { username: req.session.user.Username });
     }
 });
+
 router.get("/meeting", (req, res) => {
     if (!req.session.user) {
-        return res.redirect("/");
+        return res.redirect("/login");
     } else {
         res.redirect(`/meeting/${uuidv4()}`);
     }
 });
+
 router.get("/meeting/:room", async (req, res) => {
     if (!req.session.user) {
-        return res.redirect("/");
+        return res.redirect("/login");
     } else {
         res.status(200).render("sub_layout/room", { roomId: req.params.room, username: req.session.user.Username });
     }
@@ -75,20 +90,15 @@ router.post("/login", async (req, res) => {
         }
     }
 });
-router.get("/login", async (req, res) => {
-    if (req.session.user) {
-        return res.redirect("/");
-    } else {
-        res.render("sub_layout/login", { title: "Login", hasErrors: false });
-    }
-});
+
 router.get("/signup", async (req, res) => {
     if (req.session.user) {
-        return res.redirect("/");
+        return res.redirect("/home");
     } else {
         res.render("sub_layout/signup", { title: "Signup", hasErrors: false });
     }
 });
+
 router.post("/signup", async (req, res) => {
     try {
         // console.log("hi");
