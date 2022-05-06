@@ -45,6 +45,7 @@ navigator.mediaDevices
             call.answer(stream);
             const video = document.createElement("video");
             video.setAttribute("id", call.peer);
+            alert("user id set");
             call.on("stream", (userVideoStream) => {
                 addVideoStream(video, userVideoStream);
             });
@@ -54,16 +55,17 @@ navigator.mediaDevices
             connectToNewUser(userId, stream);
         });
         socket.on("user-disconnected", (userId) => {
-            // alert("user disconnected ss" + userId);
+            alert("user disconnected");
             removeuser(userId, stream);
         });
     });
 const removeuser = (userId, stream) => {
+    alert("userleft");
     const call = peer.call(userId, stream);
     document.getElementById(call.peer).remove();
 };
 const connectToNewUser = (userId, stream) => {
-    // alert("User Joined" + userId);
+    alert("User Joined" + userId);
     const call = peer.call(userId, stream);
     video = document.createElement("video");
     video.setAttribute("id", call.peer);
@@ -76,9 +78,6 @@ peer.on("open", (id) => {
     socket.emit("join-room", ROOM_ID, id, user);
 });
 
-const removeVideoStream = (video, stream) => {
-    // alert(video + "user disconnected final");
-};
 const addVideoStream = (video, stream) => {
     video.srcObject = stream;
     video.addEventListener("loadedmetadata", () => {
@@ -143,7 +142,10 @@ function leaveMeet() {
 }
 
 inviteButton.addEventListener("click", (e) => {
-    prompt("Copy this link and send it to people you want to meet with", window.location.href);
+    url = window.location.href.split("/");
+    str = "Meet id:- " + url[4] + "\npasscode:- " + url[5];
+    prompt("Copy to clipboard: Ctrl+C, Enter", str);
+    // alert(str);
 });
 
 socket.on("createMessage", (message, userName) => {

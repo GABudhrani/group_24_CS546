@@ -28,7 +28,7 @@ router.get("/meeting", (req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     } else {
-        res.redirect(`/meeting/${uuidv4()}`);
+        res.redirect(`/meeting/${uuidv4()}/${usersData.makeid()}`);
     }
 });
 
@@ -40,7 +40,15 @@ router.get("/profile", (req, res) => {
     }
 });
 
-router.get("/meeting/:room", async (req, res) => {
+router.post("/join", (req, res) => {
+    if (!req.session.user) {
+        return res.redirect("/");
+    } else {
+        res.redirect(`/meeting/${req.body.room}/${req.body.pass}`);
+    }
+});
+
+router.get("/meeting/:room/:pass", async (req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     } else {
