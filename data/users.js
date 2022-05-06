@@ -3,8 +3,14 @@ const mongoCollections = require("../config/mongoCollections");
 const userCollection = mongoCollections.user;
 const bcrypt = require("bcryptjs");
 const saltRound = 16;
-
+const makeid = function makeid() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (var i = 0; i < 8; i++) text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+};
 module.exports = {
+    makeid,
     async createUser(username, password, email, fName, lName) {
         try {
             checkCreateUser(username, password);
