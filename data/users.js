@@ -175,7 +175,7 @@ let exportedMethods = {
 
 //         return res;
 //     }
-// };
+};
 
 function hasWhiteSpace(s) {
     return s.indexOf(' ') >= 0;
