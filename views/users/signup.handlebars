@@ -1,14 +1,41 @@
-<h2>SignUp Form</h2>
+<h1 style="margin-left: 650px; box-sizing:">SignUp Form</h1>
 {{#if error}}
     <p class="error">{{error}}</p>
 {{/if}}
-<form action="/signup" method="post" id="signup-form">
+<form action="/signup" method="post" id="form">
     <div class="container">
-        <label for="username"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="username" id="username">
+        <label for="username"><b>Username</b></label><br>
+        <input type="text" placeholder="Enter Username" name="username" id="username"><br>
 
-        <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" id="password">
+        <label for="password"><b>Password</b></label><br>
+        <input type="password" placeholder="Enter Password" name="password" id="password"><br>
+
+        <h2 style="margin-left: 640px;">Personal Details</h2>
+
+        <label for="first_name"><b>First name</b></label><br>
+        <input type="text" placeholder="FirstName" name="firstname" id="first_name"><br>
+
+        <label for="last_name"><b>Last Name</b></label><br>
+        <input type="text" placeholder="LastName" name="lastname" id="last_name"><br>
+
+        <label for="email_address"></label><b>Email address</b></label><br>
+        <input type="email" placeholder="Email address" name="email" id="email_address"><br>
+        <br>
+        <label for="age"><b>Age</b></label><br>
+        <input type="number" placeholder="Age" name="age" id="age"><br><br>
+
+        <label for="role"><b>Role</b></label><br>
+            <input list="roles" placeholder="Role" name="role" id="role">
+            <datalist id="roles">
+            <option value="Tutor">
+            <option value="Student">
+            </datalist>
+        {{!-- <input type="text" placeholder="role" name="role" id="role"> --}}
+       
+        
+        {{!-- <label for="image">Profile Photo:</label> 
+        <input id="image" type="file" name="profile_photo" placeholder="Photo" required="" capture> --}}
+
 
         <button type="submit">Sign Up</button>
         <label>
