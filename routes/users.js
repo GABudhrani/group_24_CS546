@@ -17,8 +17,15 @@ router.get("/signup", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-    let { username, password } = req.body;
-
+    // let image ={
+    //     data: Buffer,
+    //     contentType: String
+    // }
+    let { username, password, firstname, lastname, email, age, role } = req.body;
+    // image ={
+    //     data: Buffer,
+    //     contentType: String
+    // }
     try {
         if (!username || !password) throw "Username or password not provided at routes";
 
@@ -42,7 +49,8 @@ router.post("/signup", async (req, res) => {
     }
 
     try {
-        const user = await userData.createUser(username, password);
+        
+        const user = await userData.createUser(username, password, firstname, lastname, email, age, role);
         console.log(user);
         if (user["userInserted"] === true) {
             res.status(200).redirect("/");
@@ -82,9 +90,18 @@ router.post("/login", async (req, res) => {
 
     try {
         const user = await userData.checkUser(username, password);
+        const data = await userData.getUser(username); 
+
         console.log(user);
 
-        req.session.user = { username: username };
+        req.session.user = { 
+            username: username, 
+            firstname:data.first_name,
+            lastname:data.last_name,
+            email:data.email,
+            age:data.age,
+            role:data.role
+        };
 
         res.status(200).redirect("/home");
     } catch (e) {
@@ -94,8 +111,23 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/home", async (req, res) => {
-    res.status(200).render("users/home", { username: req.session.user.username });
+    //  const username =req.session.user.username
+    //  const user= await userData.getUser(username)
+    //  if(user.firstname===undefined){
+    //      res.status(200).render("users/register")
+        
+    //  }
+    //  else{
+    //      res.status(200).render("users/home", { username: req.session.user.username })
+    // }
+     res.status(200).render("users/home", { username: req.session.user.username,
+            firstname:req.session.user.firstname,
+            lastname:req.session.user.lastname,
+            email:req.session.user.email,
+            age:req.session.user.age,
+            role:req.session.user.role });
 });
+
 
 router.get("/logout", async (req, res) => {
     req.session.destroy();
@@ -114,6 +146,42 @@ router.get("/meeting/:room", async (req, res) => {
     console.log(req.params.room);
     res.status(200).render("users/room", { roomId: req.params.room });
 });
+
+// router.post("/register", async (req, res) => {
+//     let username=req.session.user.username
+//     let {firstname,lastname,email,age,role}=req.body;
+//     // try{
+//     //     if(!firstname ||!lastname || !email || !age || !role) throw "Please provide every detail"
+//     // }
+//     // catch (e) {
+//     //     console.log(e);
+//     //     res.status(400).render("users/register", { error: e, hasErrors: true });
+//     //     return;
+//     // }
+//     try{
+//         const user = await userData.getUser(username);
+//         const id=user.id
+//         const password= user.password
+//         const data= await userData.addData(id,firstname,lastname,email,age,role)
+//         console.log(data)
+//         if (data["userInserted"] === true) {
+//             //res.status(200).render("/home");
+//             res.status(200).redirect("/home");
+//         } else {
+//             res.status(500).json({ error: "Internal Server Error" });
+//         } 
+        
+//     }catch (e) {
+//         console.log(e);
+//         res.status(400).render("users/register", { error: e, hasErrors: true });
+//         return;
+//     }
+//     res.status(200).redirect("/")
+//     //res.status(403).render("users/register");
+// });
+// router.get("/register", async (req, res) => {
+//     res.status(200).render("users/register")
+// });
 
 function hasWhiteSpace(s) {
     return s.indexOf(" ") >= 0;
