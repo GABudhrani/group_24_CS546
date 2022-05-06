@@ -87,9 +87,7 @@ io.on("connection", (socket) => {
     });
 });
 
-// app.listen(3000, () => {
-//     console.log("We've now got a server!");
-//     console.log("Your routes will be running on http://localhost:3000");
-// });
-
-server.listen(process.env.PORT || 443);
+server.listen(process.env.PORT || 443, () => {
+    console.log("We've now got a server!");
+    console.log("Your routes will be running on http://localhost:443");
+});
