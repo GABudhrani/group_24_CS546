@@ -16,14 +16,6 @@ router.get("/login", async (req, res) => {
     }
 });
 
-// router.get("/login", async (req, res) => {
-//     if (req.session.user) {
-//         return res.redirect("/");
-//     } else {
-//         res.render("sub_layout/login", { title: "Login", hasErrors: false });
-//     }
-// });
-
 router.get("/home", async (req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
@@ -37,6 +29,14 @@ router.get("/meeting", (req, res) => {
         return res.redirect("/login");
     } else {
         res.redirect(`/meeting/${uuidv4()}`);
+    }
+});
+
+router.get("/profile", (req, res) => {
+    if (!req.session.user) {
+        return res.redirect("/login");
+    } else {
+        res.redirect(`sub_layout/profile`);
     }
 });
 
