@@ -7,7 +7,7 @@ const saltRounds = 14;
 
 let exportedMethods = {
 
-    async createUser(username, password) {
+    async createUser(username, password,firstname,lastname,email,age,role) {
 
         if (!username || !password) throw 'All fields need to have valid values';
 
@@ -38,12 +38,17 @@ let exportedMethods = {
             throw 'Password should be atleast 6 characters long';
 
         const hash = await bcrypt.hash(password, saltRounds);
-
+       
         const userCollection = await users();
 
         let newUser = {
             username: username,
-            password: hash
+            password: hash,
+            first_name:firstname,
+            last_name:lastname,
+            email:email,
+            age:age,
+            role:role
         };
 
         const insertInfo = await userCollection.insertOne(newUser);
@@ -142,7 +147,35 @@ let exportedMethods = {
         }
 
     }
-};
+//     async edit(id,firstname,lastname,email,age,role){
+
+        
+        
+//         const userCollection = await users();
+        
+//         let data = {
+//             first_name:firstname,
+//             last_name:lastname,
+//             email:email,
+//             age:age,
+//             role:role
+//             };
+            
+//             const updatedInfo=userCollection.updateOne(
+//                 { _id: ObjectId(id) },
+//                 {  $set: data}
+//             );
+//             if (updatedInfo.modifiedCount === 0) {
+//                 throw 'could not update band successfully';
+//               }
+
+//         let res = {
+//             "userInserted": true
+//         }
+
+//         return res;
+//     }
+// };
 
 function hasWhiteSpace(s) {
     return s.indexOf(' ') >= 0;
