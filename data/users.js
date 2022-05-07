@@ -44,6 +44,27 @@ module.exports = {
             throw e;
         }
     },
+
+    async editUser(username, fName, lName) {
+        try {
+            const usercol = await userCollection();
+            const chckForUser = await usercol.findOne({ username: username });
+
+            const updatedInfo = await usercol.updateOne(
+                { _id: ObjectId(chckForUser._id) },
+                { $set: {firstName: fName, lastName: lName}}
+            );
+            
+            if (updatedInfo.modifiedCount === 0) {
+                throw 'could not update user successfully';
+            }
+            return true;
+
+        } catch (e) {
+            throw e;
+        }
+    },
+
     async checkUser(username, password) {
         try {
             checkCreateUser(username, password);

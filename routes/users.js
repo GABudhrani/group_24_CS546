@@ -123,14 +123,39 @@ router.get("/editprofile", async (req, res) => {
     } else {
         try {
             const getUser = await usersData.getUser(req.session.user.Username);
-            res.render("sub_layout/profile", {
-                username: getUser.username,
-                email: getUser.email,
+            res.render("sub_layout/editprofile", {
                 firstName: getUser.firstName,
                 lastName: getUser.lastName
             });
         } catch (e) {
         }
+    }
+});
+
+router.post("/editprofile", async (req, res) => {
+    console.log("inside editprofile")
+    try {
+
+        let fname1 = req.body.firstName;
+        let lname1 = req.body.lastName;
+
+        const edituser = await usersData.editUser(req.session.user.Username, fname1, lname1);
+
+        if (edituser) {
+            return res.redirect("/profile");
+        } else {
+            return res.status(400).render("sub_layout/editprofile"),
+            {
+                hasErrors: true,
+                error: "Error Occured"
+            };
+        }
+    } catch (e) {
+        res.status(e[0]).render("sub_layout/editprofile", {
+            hasErrors: true,
+            error: e[1]
+        });
+        return;
     }
 });
 
