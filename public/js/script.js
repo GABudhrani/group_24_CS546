@@ -51,21 +51,21 @@ navigator.mediaDevices
             });
         });
 
-        socket.on("user-connected", (userId) => {
-            connectToNewUser(userId, stream);
+        socket.on("user-connected", (userId, userName_team) => {
+            connectToNewUser(userId, userName_team, stream);
         });
         socket.on("user-disconnected", (userId) => {
-            alert("user disconnected");
+            // alert("user disconnected");
             removeuser(userId, stream);
         });
     });
 const removeuser = (userId, stream) => {
-    alert("userleft");
+    // alert("userleft");
     const call = peer.call(userId, stream);
     document.getElementById(call.peer).remove();
 };
-const connectToNewUser = (userId, stream) => {
-    alert("User Joined" + userId);
+const connectToNewUser = (userId, userName_team, stream) => {
+    alert(userName_team + " joined");
     const call = peer.call(userId, stream);
     video = document.createElement("video");
     video.setAttribute("id", call.peer);
