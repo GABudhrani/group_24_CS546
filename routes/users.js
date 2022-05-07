@@ -244,6 +244,43 @@ router.post("/editprofile", async (req, res) => {
     }
 });
 
+router.post("/signup", async (req, res) => {
+    try {
+        let usernameSign = req.body.username;
+        let passwordSign = req.body.password;
+        let email = req.body.email;
+        let fName = req.body.fName;
+        let lName = req.body.lName;
+        checkCreateUser(usernameSign, passwordSign);
+        const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName);
+        if (adduser.userInserted) {
+            return res.redirect("/home");
+        } else {
+            res.status(400).render("sub_layout/signup"),
+                {
+                    hasErrors: true,
+                    error: "Error Occured",
+                    title: "Signup",
+                };
+        }
+        return;
+    } catch (e) {
+        res.status(e[0]).render("sub_layout/signup", {
+            hasErrors: true,
+            error: e[1],
+        });
+        return;
+    }
+});
+
+router.get("/images", async (req, res) => {
+    if (req.session.user) {
+        return res.redirect("/home");
+    } else {
+        res.render("sub_layout/signup", { title: "Signup", hasErrors: false });
+    }
+});
+
 const checkCreateUser = function checkCreateUser(user, pass) {
     if (!user) throw [400, `Please provide a username`];
     if (!pass) throw [400, `Please provide a passowrd`];
