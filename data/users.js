@@ -4,18 +4,23 @@ const userCollection = mongoCollections.user;
 const bcrypt = require("bcryptjs");
 const saltRound = 16;
 module.exports = {
-    async createUser(username, password, email, fName, lName, userType) {
+    async createUser(username, password, email, fName, lName, userType, phonenumber, dob) {
         try {
             checkCreateUser(username, password);
             username = username.trim();
             username = username.toLowerCase();
             password = password.trim();
-
+            phonenumber=phonenumber.trim();
+            email=email.trim();
+            
             const usercol = await userCollection();
             const chckForUser = await usercol.findOne({ username: username });
-            if (chckForUser) {
-                throw [400, `User Already Exists`];
-            } else {
+            const checkphone = await usercol.findOne({ phonenumber: phonenumber });
+            const checkemail = await usercol.findOne({ email: email });
+            if (chckForUser) { throw [400, `User Already Exists`];} 
+            if (checkphone)  { throw [400, `Another Account exists with same phone number`]}
+            if (checkemail)  {throw [400, `Another Account exists with same Email Address`]}
+            else {
                 let haspass = await bcrypt.hash(password, saltRound);
                 const newUser = {
                     username: username,
@@ -23,9 +28,11 @@ module.exports = {
                     email: email,
                     firstName: fName,
                     lastName: lName,
-                    meetings: [],
+                    phonenumber: phonenumber,
                     role: userType,
-                    isPublic: false
+                    isPublic: false,
+                    dob: dob,
+                    meetings: [],
                 };
                 const addUser = await usercol.insertOne(newUser);
                 if (addUser) {
@@ -62,20 +69,52 @@ module.exports = {
         }
     },
 
-    async editUser(username, fName, lName) {
+    async editUser(username, fName, lName, dob) {
         try {
+            var count=0;
             const usercol = await userCollection();
             const chckForUser = await usercol.findOne({ username: username });
+            if(!fName){fName=chckForUser.fName}
+            if(!lName){lName=chckForUser.lName}
+            if(!dob){dob=chckForUser.dob}
 
-            const updatedInfo = await usercol.updateOne(
-                { _id: ObjectId(chckForUser._id) },
-                { $set: { firstName: fName, lastName: lName } }
-            );
-
-            if (updatedInfo.modifiedCount === 0) {
-                throw "could not update user successfully";
+            if(chckForUser.fName!==fName){
+                    count+=1;
+                    var updatedInfo = await usercol.updateOne(
+                    { _id: ObjectId(chckForUser._id) },
+                    { $set: { firstName: fName } }
+                );    
             }
-            return true;
+            
+            if(chckForUser.lName!==lName){
+                    count+=1;
+                    var updatedInfo = await usercol.updateOne(
+                    { _id: ObjectId(chckForUser._id) },
+                    { $set: { lastName: lName } }
+                );
+            }
+            if(chckForUser.dob!==dob){
+                    count+=1;
+                    var updatedInfo = await usercol.updateOne(
+                    { _id: ObjectId(chckForUser._id) },
+                    { $set: { dob:dob } }
+                );
+            }
+
+            // const updatedInfo = await usercol.updateOne(
+            //     { _id: ObjectId(chckForUser._id) },
+            //     { $set: { firstName: fName, lastName: lName, dob:dob } }
+            // );
+
+            // if (updatedInfo.modifiedCount === 0) {
+            //     throw "could not update user successfully";
+            // }
+            if(count>0){
+                return true;
+            }
+            else{
+                return false
+            }
         } catch (e) {
             throw e;
         }
