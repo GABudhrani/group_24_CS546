@@ -32,7 +32,9 @@ router.get("/meeting", async (req, res) => {
         meetId = uuidv4();
         meetPass = meetData.makeid();
         const addmeet = await meetData.createmeet(meetId, meetPass);
-        if (addmeet.meetCreated) {
+        const addMeetuser = await usersData.addMeeting(req.session.user.Username);
+        console.log(addMeetuser)
+        if (addmeet.meetCreated && addMeetuser) {
             res.redirect(`/meeting/${meetId}/${meetPass}`);
         } else {
             res.status(400).render("sub_layout/home", {
@@ -162,7 +164,8 @@ router.get("/profile", async (req, res) => {
                 username: getUser.username,
                 email: getUser.email,
                 firstName: getUser.firstName,
-                lastName: getUser.lastName
+                lastName: getUser.lastName,
+                meetingList: getUser.meetings
             });
         } catch (e) {
         }
@@ -241,13 +244,6 @@ router.post("/signup", async (req, res) => {
     }
 });
 
-router.get("/images", async (req, res) => {
-    if (req.session.user) {
-        return res.redirect("/home");
-    } else {
-        res.render("sub_layout/signup", { title: "Signup", hasErrors: false });
-    }
-});
 
 const checkCreateUser = function checkCreateUser(user, pass) {
     if (!user) throw [400, `Please provide a username`];

@@ -17,14 +17,15 @@ module.exports = {
                 throw [400, `User Already Exists`];
             } else {
                 let haspass = await bcrypt.hash(password, saltRound);
-                const newUser = { 
-                    username: username, 
-                    password: haspass, 
-                    email: email, 
-                    firstName: fName, 
-                    lastName: lName };
+                const newUser = {
+                    username: username,
+                    password: haspass,
+                    email: email,
+                    firstName: fName,
+                    lastName: lName,
+                    meetings: []
+                };
                 const addUser = await usercol.insertOne(newUser);
-                console.log(newUser);
                 if (addUser) {
                     const newId = addUser.insertedId.toString();
                     const newUserr = await this.get(newId);
@@ -38,6 +39,29 @@ module.exports = {
         }
     },
 
+    async addMeeting(username) {
+        try {
+            const usercol = await userCollection();
+            const chckForUser = await usercol.findOne({ username: username });
+
+            const updatedInfo = await usercol.updateOne(
+                { _id: ObjectId(chckForUser._id) },
+                { $addToSet: { meetings: new Date().toUTCString() } }
+            );
+
+            const upUserr = await this.getUser(username);
+
+            if (updatedInfo.modifiedCount === 0) {
+                throw 'could not update user successfully';
+            }
+            return true;
+        } catch (e) {
+            throw e;
+        }
+
+
+    },
+
     async editUser(username, fName, lName) {
         try {
             const usercol = await userCollection();
@@ -45,9 +69,9 @@ module.exports = {
 
             const updatedInfo = await usercol.updateOne(
                 { _id: ObjectId(chckForUser._id) },
-                { $set: {firstName: fName, lastName: lName}}
+                { $set: { firstName: fName, lastName: lName } }
             );
-            
+
             if (updatedInfo.modifiedCount === 0) {
                 throw 'could not update user successfully';
             }
@@ -80,6 +104,7 @@ module.exports = {
             throw e;
         }
     },
+
     async getUser(username) {
         try {
             const usercol = await userCollection();
@@ -93,6 +118,7 @@ module.exports = {
             throw e;
         }
     },
+
     async get(id) {
         if (!id) throw 'You must provide an id to search for';
         if (typeof id !== 'string') throw 'Id must be a string';
@@ -106,6 +132,7 @@ module.exports = {
         user._id = user._id.toString();
         return JSON.stringify(user);
     },
+
 };
 const checkCreateUser = function checkCreateUser(user, pass) {
     if (!user) throw [400, `Please provide a username`];
