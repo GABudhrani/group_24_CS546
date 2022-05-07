@@ -25,6 +25,7 @@ module.exports = {
                     lastName: lName,
                     meetings: [],
                     role: userType,
+                    isPublic: false
                 };
                 const addUser = await usercol.insertOne(newUser);
                 if (addUser) {
@@ -59,8 +60,6 @@ module.exports = {
         } catch (e) {
             throw e;
         }
-
-
     },
 
     async editUser(username, fName, lName) {
