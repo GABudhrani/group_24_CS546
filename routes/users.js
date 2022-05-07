@@ -2,6 +2,7 @@ const express = require("express");
 const { user } = require("../config/mongoCollections");
 const router = express.Router();
 const usersData = require("../data/users");
+const meetData = require("../data/meeting");
 const { v4: uuidv4 } = require("uuid");
 
 
@@ -24,21 +25,51 @@ router.get("/home", async (req, res) => {
         res.status(200).render("sub_layout/home", { username: req.session.user.Username });
     }
 });
-
-router.get("/meeting", (req, res) => {
+router.get("/meeting", async (req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     } else {
-        res.redirect(`/meeting/${uuidv4()}/${usersData.makeid()}`);
+        meetId = uuidv4();
+        meetPass = meetData.makeid();
+        const addmeet = await meetData.createmeet(meetId, meetPass);
+        if (addmeet.meetCreated) {
+            res.redirect(`/meeting/${meetId}/${meetPass}`);
+        } else {
+            res.status(400).render("sub_layout/home", {
+                hasErrors: true,
+                title: "Error",
+                error: "unable to create a meet",
+            });
+            return;
+        }
     }
 });
 
-
-router.post("/join", (req, res) => {
+router.post("/join", async (req, res) => {
     if (!req.session.user) {
         return res.redirect("/");
     } else {
-        res.redirect(`/meeting/${req.body.room}/${req.body.pass}`);
+        try {
+            meetId = req.body.room;
+            meetPass = req.body.pass;
+            const chckMeet = await meetData.checkMeet(meetId, meetPass);
+            if (chckMeet.authenticated) {
+                res.redirect(`/meeting/${meetId}/${meetPass}`);
+            } else {
+                res.status(400).render("sub_layout/home", {
+                    hasErrors: true,
+                    title: "Error",
+                    error: "unable to join a meet",
+                });
+                return;
+            }
+        } catch (e) {
+            res.status(400).render("sub_layout/home", {
+                hasErrors: true,
+                title: "Error",
+                error: "unable to join a meet",
+            });
+        }
     }
 });
 
@@ -46,7 +77,27 @@ router.get("/meeting/:room/:pass", async (req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     } else {
-        res.status(200).render("sub_layout/room", { roomId: req.params.room, username: req.session.user.Username });
+        try {
+            meetId_ = req.params.room;
+            meetPass = req.params.pass;
+            const chckMeet = await meetData.checkMeet(meetId, meetPass);
+            if (chckMeet.authenticated) {
+                res.status(200).render("sub_layout/room", { roomId: req.params.room, username: req.session.user.Username });
+            } else {
+                res.status(400).render("sub_layout/home", {
+                    hasErrors: true,
+                    title: "Error",
+                    error: "unable to join a meet",
+                });
+                return;
+            }
+        } catch (e) {
+            res.status(400).render("sub_layout/home", {
+                hasErrors: true,
+                title: "Error",
+                error: "unable to join a meet",
+            });
+        }
     }
 });
 
@@ -164,11 +215,11 @@ router.post("/signup", async (req, res) => {
     try {
         let usernameSign = req.body.username;
         let passwordSign = req.body.password;
-        let email1 = req.body.email;
-        let fname1 = req.body.fName;
-        let lname1 = req.body.lName;
+        let email = req.body.email;
+        let fName = req.body.fName;
+        let lName = req.body.lName;
         checkCreateUser(usernameSign, passwordSign);
-        const adduser = await usersData.createUser(usernameSign, passwordSign, email1, fname1, lname1);
+        const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName);
         if (adduser.userInserted) {
             return res.redirect("/home");
         } else {

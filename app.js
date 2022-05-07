@@ -70,7 +70,7 @@ io.on("connection", (socket) => {
         // const user_list = addUser(userId, userName, roomId);
         // console.log(user_list);
         socket.join(roomId);
-        socket.to(roomId).emit("user-connected", userId);
+        socket.to(roomId).emit("user-connected", userId, userName);
         socket.on("message", (message) => {
             io.to(roomId).emit("createMessage", message, userName);
         });
