@@ -4,7 +4,7 @@ const userCollection = mongoCollections.user;
 const bcrypt = require("bcryptjs");
 const saltRound = 16;
 module.exports = {
-    async createUser(username, password, email, fName, lName, userType, phonenumber) {
+    async createUser(username, password, email, fName, lName, userType, phonenumber, dateofbirth) {
         try {
             checkCreateUser(username, password);
             username = username.trim();
@@ -12,6 +12,7 @@ module.exports = {
             password = password.trim();
             phonenumber=phonenumber.trim();
             email=email.trim();
+            dob = Date.parse(dateofbirth)
 
             const usercol = await userCollection();
             const chckForUser = await usercol.findOne({ username: username });
@@ -30,6 +31,7 @@ module.exports = {
                     lastName: lName,
                     phonenumber: phonenumber,
                     role: userType,
+                    dob:dob,
                     meetings: [],
                 };
                 const addUser = await usercol.insertOne(newUser);

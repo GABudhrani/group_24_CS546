@@ -204,6 +204,7 @@ router.get("/profile", async (req, res) => {
                 firstName: getUser.firstName,
                 lastName: getUser.lastName,
                 phonenumber: getUser.phonenumber,
+                dob: getUser.dob,
                 meetingList: getUser.meetings
             });
         } catch (e) {}
