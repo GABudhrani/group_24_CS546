@@ -24,9 +24,17 @@ module.exports = {
                 throw [400, `User Already Exists`];
             } else {
                 let haspass = await bcrypt.hash(password, saltRound);
-                const newUser = { username: username, password: haspass, email: email, firstName: fName, lastName: lName };
+                const newUser = { 
+                    username: username, 
+                    password: haspass, 
+                    email: email, 
+                    firstName: fName, 
+                    lastName: lName };
                 const addUser = await usercol.insertOne(newUser);
+                console.log(newUser);
                 if (addUser) {
+                    const newId = addUser.insertedId.toString();
+                    const newUserr = await this.get(newId);
                     return { userInserted: true };
                 } else {
                     throw [400, "Couldn't add username"];
@@ -57,6 +65,32 @@ module.exports = {
         } catch (e) {
             throw e;
         }
+    },
+    async getUser(username) {
+        try {
+            const usercol = await userCollection();
+            const chckForUser = await usercol.findOne({ username: username });
+            if (chckForUser) {
+                return chckForUser;
+            } else {
+                throw [400, `Either the username or password is invalid".`];
+            }
+        } catch (e) {
+            throw e;
+        }
+    },
+    async get(id) {
+        if (!id) throw 'You must provide an id to search for';
+        if (typeof id !== 'string') throw 'Id must be a string';
+        if (id.trim().length === 0)
+            throw 'Id cannot be an empty string or just spaces';
+        id = id.trim();
+        if (!ObjectId.isValid(id)) throw 'invalid object ID';
+        const usercol = await userCollection();
+        const user = await usercol.findOne({ _id: ObjectId(id) });
+        if (user === null) throw 'No band with that id';
+        user._id = user._id.toString();
+        return JSON.stringify(user);
     },
 };
 const checkCreateUser = function checkCreateUser(user, pass) {

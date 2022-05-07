@@ -32,13 +32,6 @@ router.get("/meeting", (req, res) => {
     }
 });
 
-router.get("/profile", (req, res) => {
-    if (!req.session.user) {
-        return res.redirect("/login");
-    } else {
-        res.redirect(`sub_layout/profile`);
-    }
-});
 
 router.post("/join", (req, res) => {
     if (!req.session.user) {
@@ -107,27 +100,61 @@ router.get("/signup", async (req, res) => {
     }
 });
 
+router.get("/profile", async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect("/login");
+    } else {
+        try {
+            const getUser = await usersData.getUser(req.session.user.Username);
+            res.render("sub_layout/profile", {
+                username: getUser.username,
+                email: getUser.email,
+                firstName: getUser.firstName,
+                lastName: getUser.lastName
+            });
+        } catch (e) {
+        }
+    }
+});
+
+router.get("/editprofile", async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect("/login");
+    } else {
+        try {
+            const getUser = await usersData.getUser(req.session.user.Username);
+            res.render("sub_layout/profile", {
+                username: getUser.username,
+                email: getUser.email,
+                firstName: getUser.firstName,
+                lastName: getUser.lastName
+            });
+        } catch (e) {
+        }
+    }
+});
+
 router.post("/signup", async (req, res) => {
     try {
-        // console.log("hi");
         let usernameSign = req.body.username;
         let passwordSign = req.body.password;
+        let email1 = req.body.email;
+        let fname1 = req.body.fName;
+        let lname1 = req.body.lName;
         checkCreateUser(usernameSign, passwordSign);
-        const adduser = await usersData.createUser(usernameSign, passwordSign);
+        const adduser = await usersData.createUser(usernameSign, passwordSign, email1, fname1, lname1);
         if (adduser.userInserted) {
-            // console.log(hi);
-            return res.redirect("/");
+            return res.redirect("/home");
         } else {
             res.status(400).render("sub_layout/signup"),
-                {
-                    hasErrors: true,
-                    error: "Error Occured",
-                    title: "Signup",
-                };
+            {
+                hasErrors: true,
+                error: "Error Occured",
+                title: "Signup",
+            };
         }
         return;
     } catch (e) {
-        // console.log(e[1]);
         res.status(e[0]).render("sub_layout/signup", {
             hasErrors: true,
             error: e[1],
@@ -136,6 +163,7 @@ router.post("/signup", async (req, res) => {
         return;
     }
 });
+
 
 const checkCreateUser = function checkCreateUser(user, pass) {
     if (!user) throw [400, `Please provide a username`];
