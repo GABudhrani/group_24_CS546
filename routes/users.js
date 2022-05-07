@@ -4,6 +4,7 @@ const router = express.Router();
 const usersData = require("../data/users");
 const { v4: uuidv4 } = require("uuid");
 
+
 router.get("/", async (req, res) => {
     res.render("sub_layout/intro");
 });
@@ -189,6 +190,13 @@ router.post("/signup", async (req, res) => {
     }
 });
 
+router.get("/images", async (req, res) => {
+    if (req.session.user) {
+        return res.redirect("/home");
+    } else {
+        res.render("sub_layout/signup", { title: "Signup", hasErrors: false });
+    }
+});
 
 const checkCreateUser = function checkCreateUser(user, pass) {
     if (!user) throw [400, `Please provide a username`];
