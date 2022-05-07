@@ -4,6 +4,7 @@ const router = express.Router();
 const usersData = require("../data/users");
 const meetData = require("../data/meeting");
 const { v4: uuidv4 } = require("uuid");
+const xss = require('xss');
 
 router.get("/", async (req, res) => {
     res.render("sub_layout/intro");
@@ -55,8 +56,8 @@ router.post("/join", async (req, res) => {
         return res.redirect("/");
     } else {
         try {
-            meetId = req.body.room;
-            meetPass = req.body.pass;
+            meetId = xss(req.body.room);
+            meetPass = xss(req.body.pass);
             const chckMeet = await meetData.checkMeet(meetId, meetPass);
             if (chckMeet.authenticated) {
                 res.redirect(`/meeting/${meetId}/${meetPass}`);
@@ -83,8 +84,8 @@ router.get("/meeting/:room/:pass", async (req, res) => {
         return res.redirect("/login");
     } else {
         try {
-            meetId_ = req.params.room;
-            meetPass = req.params.pass;
+            meetId_ = xss(req.params.room);
+            meetPass = xss(req.params.pass);
             const chckMeet = await meetData.checkMeet(meetId, meetPass);
             if (chckMeet.authenticated) {
                 res.status(200).render("sub_layout/room", { roomId: req.params.room, username: req.session.user.Username });
@@ -107,20 +108,20 @@ router.get("/meeting/:room/:pass", async (req, res) => {
 });
 
 router.get("/logout", async (req, res) => {
-    user_logout = req.session.user.Username.toLowerCase();
+    user_logout = xss(req.session.user.Username.toLowerCase());
     req.session.destroy();
     res.render("sub_layout/login", { title: "Logout", username: user_logout });
 });
 
 router.post("/login", async (req, res) => {
     try {
-        let username = req.body.username;
-        let password = req.body.password;
+        let username = xss(req.body.username);
+        let password = xss(req.body.password);
         checkCreateUser(username, password);
         const userCheck = await usersData.checkUser(username, password);
 
         if (userCheck.authenticated) {
-            req.session.user = { Username: username, UserType: userCheck.userType };
+            req.session.user = { Username: username, UserType: xss(userCheck.userType) };
             // console.log(req.session.user.UserType);
             res.redirect("/home");
             return;
@@ -160,12 +161,12 @@ router.get("/signup", async (req, res) => {
 
 router.post("/signup", async (req, res) => {
     try {
-        let usernameSign = req.body.username;
-        let passwordSign = req.body.password;
-        let email = req.body.email;
-        let fName = req.body.fName;
-        let lName = req.body.lName;
-        let userType = req.body.Type;
+        let usernameSign = xss(req.body.username);
+        let passwordSign = xss(req.body.password);
+        let email = xss(req.body.email);
+        let fName = xss(req.body.fName);
+        let lName = xss(req.body.lName);
+        let userType = xss(req.body.Type);
         checkCreateUser(usernameSign, passwordSign);
         const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName, userType);
         if (adduser.userInserted) {
@@ -222,10 +223,10 @@ router.get("/editprofile", async (req, res) => {
 
 router.post("/editprofile", async (req, res) => {
     try {
-        let fname1 = req.body.firstName;
-        let lname1 = req.body.lastName;
+        let fname1 = xss(req.body.firstName);
+        let lname1 = xss(req.body.lastName);
 
-        const edituser = await usersData.editUser(req.session.user.Username, fname1, lname1);
+        const edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1);
 
         if (edituser) {
             return res.redirect("/profile");
@@ -249,11 +250,11 @@ router.post("/editprofile", async (req, res) => {
 
 router.post("/signup", async (req, res) => {
     try {
-        let usernameSign = req.body.username;
-        let passwordSign = req.body.password;
-        let email = req.body.email;
-        let fName = req.body.fName;
-        let lName = req.body.lName;
+        let usernameSign = xss(req.body.username);
+        let passwordSign = xss(req.body.password);
+        let email = xss(req.body.email);
+        let fName = xss(req.body.fName);
+        let lName = xss(req.body.lName);
         checkCreateUser(usernameSign, passwordSign);
         const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName);
         if (adduser.userInserted) {
