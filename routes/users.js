@@ -108,7 +108,7 @@ router.get("/meeting/:room/:pass", async (req, res) => {
 });
 
 router.get("/logout", async (req, res) => {
-    user_logout = xss(req.session.user.Username.toLowerCase());
+    user_logout = req.session.user.Username.toLowerCase();
     req.session.destroy();
     res.render("sub_layout/login", { title: "Logout", username: user_logout });
 });
@@ -168,9 +168,10 @@ router.post("/signup", async (req, res) => {
         let lName = xss(req.body.lName);
         let userType = xss(req.body.Type);
         let phonenumber=xss(req.body.phonenumber);
+        let dob=xss(req.body.dob)
 
         checkCreateUser(usernameSign, passwordSign);
-        const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName, userType, phonenumber);
+        const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName, userType, phonenumber,dob);
         if (adduser.userInserted) {
             return res.redirect("/home");
         } else {
