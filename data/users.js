@@ -4,7 +4,7 @@ const userCollection = mongoCollections.user;
 const bcrypt = require("bcryptjs");
 const saltRound = 16;
 module.exports = {
-    async createUser(username, password, email, fName, lName) {
+    async createUser(username, password, email, fName, lName, userType) {
         try {
             checkCreateUser(username, password);
             username = username.trim();
@@ -17,14 +17,15 @@ module.exports = {
                 throw [400, `User Already Exists`];
             } else {
                 let haspass = await bcrypt.hash(password, saltRound);
-                const newUser = { 
-                    username: username, 
-                    password: haspass, 
-                    email: email, 
-                    firstName: fName, 
-                    lastName: lName };
+                const newUser = {
+                    firstName: fName,
+                    lastName: lName,
+                    email: email,
+                    username: username,
+                    password: haspass,
+                    role: userType,
+                };
                 const addUser = await usercol.insertOne(newUser);
-                console.log(newUser);
                 if (addUser) {
                     const newId = addUser.insertedId.toString();
                     const newUserr = await this.get(newId);
@@ -43,16 +44,12 @@ module.exports = {
             const usercol = await userCollection();
             const chckForUser = await usercol.findOne({ username: username });
 
-            const updatedInfo = await usercol.updateOne(
-                { _id: ObjectId(chckForUser._id) },
-                { $set: {firstName: fName, lastName: lName}}
-            );
-            
+            const updatedInfo = await usercol.updateOne({ _id: ObjectId(chckForUser._id) }, { $set: { firstName: fName, lastName: lName } });
+
             if (updatedInfo.modifiedCount === 0) {
-                throw 'could not update user successfully';
+                throw "could not update user successfully";
             }
             return true;
-
         } catch (e) {
             throw e;
         }
@@ -69,7 +66,7 @@ module.exports = {
             if (chckForUser) {
                 chckPassword = await bcrypt.compare(password, chckForUser.password);
                 if (chckPassword) {
-                    return { authenticated: true };
+                    return { authenticated: true, userType: chckForUser.role };
                 } else {
                     throw [400, `Either the username or password is invalid`];
                 }
@@ -94,15 +91,14 @@ module.exports = {
         }
     },
     async get(id) {
-        if (!id) throw 'You must provide an id to search for';
-        if (typeof id !== 'string') throw 'Id must be a string';
-        if (id.trim().length === 0)
-            throw 'Id cannot be an empty string or just spaces';
+        if (!id) throw "You must provide an id to search for";
+        if (typeof id !== "string") throw "Id must be a string";
+        if (id.trim().length === 0) throw "Id cannot be an empty string or just spaces";
         id = id.trim();
-        if (!ObjectId.isValid(id)) throw 'invalid object ID';
+        if (!ObjectId.isValid(id)) throw "invalid object ID";
         const usercol = await userCollection();
         const user = await usercol.findOne({ _id: ObjectId(id) });
-        if (user === null) throw 'No band with that id';
+        if (user === null) throw "No band with that id";
         user._id = user._id.toString();
         return JSON.stringify(user);
     },

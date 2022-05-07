@@ -21,15 +21,14 @@ router.get("/home", async (req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     } else {
-        res.status(200).render("sub_layout/home", { username: req.session.user.Username });
+        if (req.session.user.UserType == "Tutor") {
+            res.status(200).render("sub_layout/home", { username: req.session.user.Username, tutor: req.session.user.UserType });
+        } else if (req.session.user.UserType == "Student") {
+            res.status(200).render("sub_layout/home", { username: req.session.user.Username, student: req.session.user.UserType });
+        }
     }
 });
-<<<<<<< HEAD
 router.get("/meeting", async (req, res) => {
-=======
-
-router.get("/meeting", (req, res) => {
->>>>>>> 8b446024d1f87e1dffcc5ac53294b4406e326193
     if (!req.session.user) {
         return res.redirect("/login");
     } else {
@@ -49,12 +48,7 @@ router.get("/meeting", (req, res) => {
     }
 });
 
-<<<<<<< HEAD
 router.post("/join", async (req, res) => {
-=======
-
-router.post("/join", (req, res) => {
->>>>>>> 8b446024d1f87e1dffcc5ac53294b4406e326193
     if (!req.session.user) {
         return res.redirect("/");
     } else {
@@ -113,7 +107,7 @@ router.get("/meeting/:room/:pass", async (req, res) => {
 router.get("/logout", async (req, res) => {
     user_logout = req.session.user.Username.toLowerCase();
     req.session.destroy();
-    res.render("sub_layout/logout", { title: "Logout", username: user_logout });
+    res.render("sub_layout/login", { title: "Logout", username: user_logout });
 });
 
 router.post("/login", async (req, res) => {
@@ -124,7 +118,8 @@ router.post("/login", async (req, res) => {
         const userCheck = await usersData.checkUser(username, password);
 
         if (userCheck.authenticated) {
-            req.session.user = { Username: username };
+            req.session.user = { Username: username, UserType: userCheck.userType };
+            // console.log(req.session.user.UserType);
             res.redirect("/home");
             return;
         } else {
@@ -161,91 +156,25 @@ router.get("/signup", async (req, res) => {
     }
 });
 
-router.get("/profile", async (req, res) => {
-    if (!req.session.user) {
-        return res.redirect("/login");
-    } else {
-        try {
-            const getUser = await usersData.getUser(req.session.user.Username);
-            res.render("sub_layout/profile", {
-                username: getUser.username,
-                email: getUser.email,
-                firstName: getUser.firstName,
-                lastName: getUser.lastName
-            });
-        } catch (e) {
-        }
-    }
-});
-
-router.get("/editprofile", async (req, res) => {
-    if (!req.session.user) {
-        return res.redirect("/login");
-    } else {
-        try {
-            const getUser = await usersData.getUser(req.session.user.Username);
-            res.render("sub_layout/editprofile", {
-                firstName: getUser.firstName,
-                lastName: getUser.lastName
-            });
-        } catch (e) {
-        }
-    }
-});
-
-router.post("/editprofile", async (req, res) => {
-    console.log("inside editprofile")
-    try {
-
-        let fname1 = req.body.firstName;
-        let lname1 = req.body.lastName;
-
-        const edituser = await usersData.editUser(req.session.user.Username, fname1, lname1);
-
-        if (edituser) {
-            return res.redirect("/profile");
-        } else {
-            return res.status(400).render("sub_layout/editprofile"),
-            {
-                hasErrors: true,
-                error: "Error Occured"
-            };
-        }
-    } catch (e) {
-        res.status(e[0]).render("sub_layout/editprofile", {
-            hasErrors: true,
-            error: e[1]
-        });
-        return;
-    }
-});
-
 router.post("/signup", async (req, res) => {
     try {
         let usernameSign = req.body.username;
         let passwordSign = req.body.password;
-<<<<<<< HEAD
         let email = req.body.email;
         let fName = req.body.fName;
         let lName = req.body.lName;
+        let userType = req.body.Type;
         checkCreateUser(usernameSign, passwordSign);
-        const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName);
-=======
-        let email1 = req.body.email;
-        let fname1 = req.body.fName;
-        let lname1 = req.body.lName;
-        checkCreateUser(usernameSign, passwordSign);
-        const adduser = await usersData.createUser(usernameSign, passwordSign, email1, fname1, lname1);
->>>>>>> 8b446024d1f87e1dffcc5ac53294b4406e326193
+        const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName, userType);
         if (adduser.userInserted) {
             return res.redirect("/home");
         } else {
             res.status(400).render("sub_layout/signup"),
-            {
-                hasErrors: true,
-                error: "Error Occured",
-                title: "Signup",
-            };
+                {
+                    hasErrors: true,
+                    error: "Error Occured",
+                    title: "Signup",
+                };
         }
         return;
     } catch (e) {
@@ -258,6 +187,62 @@ router.post("/signup", async (req, res) => {
     }
 });
 
+router.get("/profile", async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect("/login");
+    } else {
+        try {
+            const getUser = await usersData.getUser(req.session.user.Username);
+            res.render("sub_layout/profile", {
+                username: getUser.username,
+                email: getUser.email,
+                firstName: getUser.firstName,
+                lastName: getUser.lastName,
+            });
+        } catch (e) {}
+    }
+});
+
+router.get("/editprofile", async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect("/login");
+    } else {
+        try {
+            const getUser = await usersData.getUser(req.session.user.Username);
+            res.render("sub_layout/editprofile", {
+                firstName: getUser.firstName,
+                lastName: getUser.lastName,
+            });
+        } catch (e) {}
+    }
+});
+
+router.post("/editprofile", async (req, res) => {
+    try {
+        let fname1 = req.body.firstName;
+        let lname1 = req.body.lastName;
+
+        const edituser = await usersData.editUser(req.session.user.Username, fname1, lname1);
+
+        if (edituser) {
+            return res.redirect("/profile");
+        } else {
+            return (
+                res.status(400).render("sub_layout/editprofile"),
+                {
+                    hasErrors: true,
+                    error: "Error Occured",
+                }
+            );
+        }
+    } catch (e) {
+        res.status(e[0]).render("sub_layout/editprofile", {
+            hasErrors: true,
+            error: e[1],
+        });
+        return;
+    }
+});
 
 const checkCreateUser = function checkCreateUser(user, pass) {
     if (!user) throw [400, `Please provide a username`];
