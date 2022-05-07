@@ -221,6 +221,7 @@ router.get("/editprofile", async (req, res) => {
             res.render("sub_layout/editprofile", {
                 firstName: getUser.firstName,
                 lastName: getUser.lastName,
+                dob: getUser.dob
             });
         } catch (e) {}
     }
@@ -230,8 +231,9 @@ router.post("/editprofile", async (req, res) => {
     try {
         let fname1 = xss(req.body.firstName);
         let lname1 = xss(req.body.lastName);
+        let dob = xss(req.body.dob)
 
-        const edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1);
+        const edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1, dob);
 
         if (edituser) {
             return res.redirect("/profile");

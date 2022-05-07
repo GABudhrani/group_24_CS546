@@ -70,14 +70,14 @@ module.exports = {
 
     },
 
-    async editUser(username, fName, lName) {
+    async editUser(username, fName, lName, dob) {
         try {
             const usercol = await userCollection();
             const chckForUser = await usercol.findOne({ username: username });
 
             const updatedInfo = await usercol.updateOne(
                 { _id: ObjectId(chckForUser._id) },
-                { $set: { firstName: fName, lastName: lName } }
+                { $set: { firstName: fName, lastName: lName, dob:dob } }
             );
 
             if (updatedInfo.modifiedCount === 0) {
