@@ -6,22 +6,32 @@ const meetData = require("../data/meeting");
 const { v4: uuidv4 } = require("uuid");
 
 router.get("/", async (req, res) => {
+    res.render("sub_layout/intro");
+});
+
+router.get("/login", async (req, res) => {
     if (req.session.user) {
         return res.redirect("/home");
     } else {
-        res.render("sub_layout/login", { title: "Login" });
+        res.render("sub_layout/login", { title: "Login", hasErrors: false });
     }
 });
+
 router.get("/home", async (req, res) => {
     if (!req.session.user) {
-        return res.redirect("/");
+        return res.redirect("/login");
     } else {
         res.status(200).render("sub_layout/home", { username: req.session.user.Username });
     }
 });
+<<<<<<< HEAD
 router.get("/meeting", async (req, res) => {
+=======
+
+router.get("/meeting", (req, res) => {
+>>>>>>> 8b446024d1f87e1dffcc5ac53294b4406e326193
     if (!req.session.user) {
-        return res.redirect("/");
+        return res.redirect("/login");
     } else {
         meetId = uuidv4();
         meetPass = meetData.makeid();
@@ -39,7 +49,12 @@ router.get("/meeting", async (req, res) => {
     }
 });
 
+<<<<<<< HEAD
 router.post("/join", async (req, res) => {
+=======
+
+router.post("/join", (req, res) => {
+>>>>>>> 8b446024d1f87e1dffcc5ac53294b4406e326193
     if (!req.session.user) {
         return res.redirect("/");
     } else {
@@ -69,7 +84,7 @@ router.post("/join", async (req, res) => {
 
 router.get("/meeting/:room/:pass", async (req, res) => {
     if (!req.session.user) {
-        return res.redirect("/");
+        return res.redirect("/login");
     } else {
         try {
             meetId_ = req.params.room;
@@ -137,44 +152,103 @@ router.post("/login", async (req, res) => {
         }
     }
 });
-router.get("/login", async (req, res) => {
-    if (req.session.user) {
-        return res.redirect("/");
-    } else {
-        res.render("sub_layout/login", { title: "Login", hasErrors: false });
-    }
-});
+
 router.get("/signup", async (req, res) => {
     if (req.session.user) {
-        return res.redirect("/");
+        return res.redirect("/home");
     } else {
         res.render("sub_layout/signup", { title: "Signup", hasErrors: false });
     }
 });
+
+router.get("/profile", async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect("/login");
+    } else {
+        try {
+            const getUser = await usersData.getUser(req.session.user.Username);
+            res.render("sub_layout/profile", {
+                username: getUser.username,
+                email: getUser.email,
+                firstName: getUser.firstName,
+                lastName: getUser.lastName
+            });
+        } catch (e) {
+        }
+    }
+});
+
+router.get("/editprofile", async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect("/login");
+    } else {
+        try {
+            const getUser = await usersData.getUser(req.session.user.Username);
+            res.render("sub_layout/editprofile", {
+                firstName: getUser.firstName,
+                lastName: getUser.lastName
+            });
+        } catch (e) {
+        }
+    }
+});
+
+router.post("/editprofile", async (req, res) => {
+    console.log("inside editprofile")
+    try {
+
+        let fname1 = req.body.firstName;
+        let lname1 = req.body.lastName;
+
+        const edituser = await usersData.editUser(req.session.user.Username, fname1, lname1);
+
+        if (edituser) {
+            return res.redirect("/profile");
+        } else {
+            return res.status(400).render("sub_layout/editprofile"),
+            {
+                hasErrors: true,
+                error: "Error Occured"
+            };
+        }
+    } catch (e) {
+        res.status(e[0]).render("sub_layout/editprofile", {
+            hasErrors: true,
+            error: e[1]
+        });
+        return;
+    }
+});
+
 router.post("/signup", async (req, res) => {
     try {
-        // console.log("hi");
         let usernameSign = req.body.username;
         let passwordSign = req.body.password;
+<<<<<<< HEAD
         let email = req.body.email;
         let fName = req.body.fName;
         let lName = req.body.lName;
         checkCreateUser(usernameSign, passwordSign);
         const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName);
+=======
+        let email1 = req.body.email;
+        let fname1 = req.body.fName;
+        let lname1 = req.body.lName;
+        checkCreateUser(usernameSign, passwordSign);
+        const adduser = await usersData.createUser(usernameSign, passwordSign, email1, fname1, lname1);
+>>>>>>> 8b446024d1f87e1dffcc5ac53294b4406e326193
         if (adduser.userInserted) {
-            // console.log(hi);
-            return res.redirect("/");
+            return res.redirect("/home");
         } else {
             res.status(400).render("sub_layout/signup"),
-                {
-                    hasErrors: true,
-                    error: "Error Occured",
-                    title: "Signup",
-                };
+            {
+                hasErrors: true,
+                error: "Error Occured",
+                title: "Signup",
+            };
         }
         return;
     } catch (e) {
-        // console.log(e[1]);
         res.status(e[0]).render("sub_layout/signup", {
             hasErrors: true,
             error: e[1],
@@ -183,6 +257,7 @@ router.post("/signup", async (req, res) => {
         return;
     }
 });
+
 
 const checkCreateUser = function checkCreateUser(user, pass) {
     if (!user) throw [400, `Please provide a username`];

@@ -28,14 +28,15 @@
                     <span class="input-icon"><i class="fa-solid fa-user"></i></span>
                 </label>
                 <label class="inp">
-                    <input type="password" class="input-text" placeholder="&nbsp;" name="password" id="password" required />
+                    <input type="password" class="input-text" placeholder="&nbsp;" name="password" id="password"
+                        required />
                     <span class="label">Password</span>
                     <span class="input-icon input-icon-password" data-password><i class="fa-solid fa-eye"></i></span>
                 </label>
                 <button class="btn btn-login">Create account</button>
             </form>
             {{#if hasErrors}}
-                <p>{{error}}</p>
+            <p>{{error}}</p>
             {{/if}}
         </main>
         <div class="welcome-container">
@@ -43,7 +44,9 @@
         </div>
     </div>
     <script>
-        const eyeClick = document.querySelector("[data-password]"); const password_elem = document.getElementById("password"); eyeClick.onclick = () => { const icon = eyeClick.children[0];
-        icon.classList.toggle("fa-eye-slash"); if (password_elem.type === "password") { password_elem.type = "text"; } else if (password_elem.type === "text") { password_elem.type = "password"; } };
+        const eyeClick = document.querySelector("[data-password]"); const password_elem = document.getElementById("password"); eyeClick.onclick = () => {
+            const icon = eyeClick.children[0];
+            icon.classList.toggle("fa-eye-slash"); if (password_elem.type === "password") { password_elem.type = "text"; } else if (password_elem.type === "text") { password_elem.type = "password"; }
+        };
     </script>
 </body>

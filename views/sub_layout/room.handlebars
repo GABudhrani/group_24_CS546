@@ -28,13 +28,13 @@
           <i class="fa fa-phone" style="transform: rotate(135deg);"></i>
         </div>
         <div class="modal">
-<div class="modalContent">
-<span class="close">×</span>
-<p>Are you sure you want to Leave this meet</p>
-<button class="cancel" onclick="hideModal()">Cancel</button>
-<button class="del" onclick="leaveMeet()">Leave Meeting</button>
-</div>
-</div>
+          <div class="modalContent">
+            <span class="close">×</span>
+            <p>Are you sure you want to Leave this meet</p>
+            <button class="cancel" onclick="hideModal()">Cancel</button>
+            <button class="del" onclick="leaveMeet()">Leave Meeting</button>
+          </div>
+        </div>
       </div>
       <div class="options__right">
         <div id="inviteButton" class="options__button">
@@ -59,20 +59,20 @@
 </div>
 <script>
   var modal = document.querySelector(".modal");
-   var btn = document.querySelector(".openModal");
-   var span = document.querySelector(".close");
-   btn.addEventListener("click", () => {
-      modal.style.display = "block";
-   });
-   span.addEventListener("click", () => {
+  var btn = document.querySelector(".openModal");
+  var span = document.querySelector(".close");
+  btn.addEventListener("click", () => {
+    modal.style.display = "block";
+  });
+  span.addEventListener("click", () => {
+    hideModal();
+  });
+  function hideModal() {
+    modal.style.display = "none";
+  }
+  window.onclick = function (event) {
+    if (event.target == modal) {
       hideModal();
-   });
-   function hideModal() {
-      modal.style.display = "none";
-   }
-   window.onclick = function(event) {
-      if (event.target == modal) {
-         hideModal();
-      }
-   };
+    }
+  };
 </script>
