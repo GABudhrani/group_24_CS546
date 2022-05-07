@@ -138,7 +138,7 @@ stopVideo.addEventListener("click", () => {
 });
 
 function leaveMeet() {
-    window.location.replace("/");
+    window.location.replace("/home");
 }
 
 inviteButton.addEventListener("click", (e) => {
