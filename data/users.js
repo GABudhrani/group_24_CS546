@@ -4,18 +4,23 @@ const userCollection = mongoCollections.user;
 const bcrypt = require("bcryptjs");
 const saltRound = 16;
 module.exports = {
-    async createUser(username, password, email, fName, lName, userType) {
+    async createUser(username, password, email, fName, lName, userType, phonenumber) {
         try {
             checkCreateUser(username, password);
             username = username.trim();
             username = username.toLowerCase();
             password = password.trim();
+            phonenumber=phonenumber.trim();
+            email=email.trim();
 
             const usercol = await userCollection();
             const chckForUser = await usercol.findOne({ username: username });
-            if (chckForUser) {
-                throw [400, `User Already Exists`];
-            } else {
+            const checkphone = await usercol.findOne({ phonenumber: phonenumber });
+            const checkemail = await usercol.findOne({ email: email });
+            if (chckForUser) { throw [400, `User Already Exists`];} 
+            if (checkphone)  { throw [400, `Another Account exists with same phone number`]}
+            if (checkemail)  {throw [400, `Another Account exists with same Email Address`]}
+            else {
                 let haspass = await bcrypt.hash(password, saltRound);
                 const newUser = {
                     username: username,
@@ -23,8 +28,9 @@ module.exports = {
                     email: email,
                     firstName: fName,
                     lastName: lName,
-                    meetings: [],
+                    phonenumber: phonenumber,
                     role: userType,
+                    meetings: [],
                 };
                 const addUser = await usercol.insertOne(newUser);
                 if (addUser) {

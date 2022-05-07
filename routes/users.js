@@ -167,8 +167,10 @@ router.post("/signup", async (req, res) => {
         let fName = xss(req.body.fName);
         let lName = xss(req.body.lName);
         let userType = xss(req.body.Type);
+        let phonenumber=xss(req.body.phonenumber);
+
         checkCreateUser(usernameSign, passwordSign);
-        const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName, userType);
+        const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName, userType, phonenumber);
         if (adduser.userInserted) {
             return res.redirect("/home");
         } else {
@@ -201,6 +203,7 @@ router.get("/profile", async (req, res) => {
                 email: getUser.email,
                 firstName: getUser.firstName,
                 lastName: getUser.lastName,
+                phonenumber: getUser.phonenumber,
                 meetingList: getUser.meetings
             });
         } catch (e) {}
