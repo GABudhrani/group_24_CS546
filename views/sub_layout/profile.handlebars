@@ -13,22 +13,21 @@
 <p>Date Of Birth(YYYY-MM-DD): {{dob}}</p>
 
 {{#if meetingList.length}}
-<p>Meeting history:</p>
-<ul>
-    {{#each meetingList}}
-    <li>{{this}}</li>
-    {{/each}}
-</ul>
+    <p>Meeting history:</p>
+    <ul>
+        {{#each meetingList}}
+            <li>{{this}}</li>
+        {{/each}}
+    </ul>
 
 {{else}}
-<p class="meeting-not-found">No meeting found</p>
+    <p class="meeting-not-found">No meeting found</p>
 
 {{/if}}
 {{#if profilePic}}
-    <img src="{{{profilePic}}}">
+    <img src="{{{profilePic}}}" />
     <button url="{{profilePic}}">download</button>
-    {{else}}
+{{else}}
     <p class="meeting-not-found">No Profile Pic found</p>
 {{/if}}
-
 <a id="Edit Profile" href="/editprofile">Edit Profile</a>
