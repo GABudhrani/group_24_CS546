@@ -70,21 +70,29 @@ module.exports = {
 
     },
 
-    async editUser(username, fName, lName) {
+    async editUser(username, fName, lName, imagePath=null) {
         try {
+            console.log("input:",username, imagePath);
             const usercol = await userCollection();
             const chckForUser = await usercol.findOne({ username: username });
-
-            const updatedInfo = await usercol.updateOne(
-                { _id: ObjectId(chckForUser._id) },
-                { $set: { firstName: fName, lastName: lName } }
-            );
-
+            let updatedInfo;
+            if(imagePath){
+                updatedInfo = await usercol.updateOne(
+                    { _id: ObjectId(chckForUser._id) },
+                    { $set: { firstName: fName, lastName: lName , profilePic:imagePath} }
+                );
+            }else{
+                updatedInfo = await usercol.updateOne(
+                    { _id: ObjectId(chckForUser._id) },
+                    { $set: { firstName: fName, lastName: lName} }
+                );
+            }
             if (updatedInfo.modifiedCount === 0) {
                 throw "could not update user successfully";
             }
             return true;
         } catch (e) {
+            console.log("err",e);
             throw e;
         }
     },

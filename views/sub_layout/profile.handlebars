@@ -24,5 +24,11 @@
 <p class="meeting-not-found">No meeting found</p>
 
 {{/if}}
+{{#if profilePic}}
+    <img src="{{{profilePic}}}">
+    <button url="{{profilePic}}">download</button>
+    {{else}}
+    <p class="meeting-not-found">No Profile Pic found</p>
+{{/if}}
 
 <a id="Edit Profile" href="/editprofile">Edit Profile</a>
