@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
 :root {
     --main-darklg: #1d2635;
     --main-dark: #161d29;
@@ -22,7 +23,7 @@
     background-color: var(--main-darklg);
 }
 
-.logo>h3 {
+.logo > h1 {
     color: var(--main-light);
 }
 
@@ -73,6 +74,7 @@ video {
 }
 
 .options__button {
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -84,8 +86,8 @@ video {
     width: 50px;
     margin: 0 0.5rem;
 }
-
 .end__button {
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -119,6 +121,7 @@ video {
 }
 
 .main__message_container {
+    margin-right: 16%;
     padding: 1rem;
     display: flex;
     align-items: center;
@@ -145,19 +148,19 @@ video {
     flex-direction: column;
 }
 
-.message>b {
+.message > b {
     color: #eeeeee;
     display: flex;
     align-items: center;
     text-transform: capitalize;
 }
 
-.message>b>i {
+.message > b > i {
     margin-right: 0.7rem;
     font-size: 1.5rem;
 }
 
-.message>span {
+.message > span {
     background-color: #eeeeee;
     margin: 1rem 0;
     padding: 1rem;
@@ -247,7 +250,6 @@ a {
     flex-direction: column;
     gap: 2rem;
 }
-
 .login-container {
     width: 100vw;
     padding: 10rem 10rem;
@@ -256,12 +258,10 @@ a {
     grid-column: 1 / 2;
     grid-row: 1;
 }
-
 .login-form {
     max-width: 45rem;
     width: 100%;
 }
-
 .text-mute {
     color: #aaa;
 }
@@ -275,7 +275,6 @@ a {
     background: #eee;
     width: 100%;
 }
-
 .input-text:focus {
     outline-color: #2196f3;
 }
@@ -291,26 +290,21 @@ a {
     font-weight: 500;
     font-size: inherit;
 }
-
 .btn-login {
     align-self: flex-end;
     width: 100%;
     margin-top: 2rem;
     box-shadow: 0 5px 5px #00000020;
 }
-
 .btn-login:active {
     box-shadow: none;
 }
-
 .btn-login:hover {
     background: #2180f9;
 }
-
 .inp {
     position: relative;
 }
-
 .label {
     pointer-events: none;
     position: absolute;
@@ -322,14 +316,12 @@ a {
     transition: all 0.2s;
     transform-origin: left;
 }
-
-.input-text:not(:placeholder-shown)+.label,
-.input-text:focus+.label {
+.input-text:not(:placeholder-shown) + .label,
+.input-text:focus + .label {
     top: 0.7rem;
     transform: scale(0.75);
 }
-
-.input-text:focus+.label {
+.input-text:focus + .label {
     color: #2196f3;
 }
 
@@ -340,7 +332,6 @@ a {
     font-size: 2rem;
     color: #00000070;
 }
-
 .input-icon-password {
     cursor: pointer;
 }
@@ -365,13 +356,11 @@ a {
     max-width: 45rem;
     width: 100%;
 }
-
 .line-breaker .line {
     width: 50%;
     height: 1px;
     background: #eee;
 }
-
 .line-breaker {
     display: flex;
     justify-content: center;
@@ -379,7 +368,6 @@ a {
     color: #ccc;
     margin: 3rem 0;
 }
-
 .line-breaker span:nth-child(2) {
     margin: 0 2rem;
 }
@@ -394,11 +382,9 @@ a {
     align-items: flex-start;
     padding: 10rem;
 }
-
 .lg {
     font-size: 6rem;
 }
-
 .welcome-container img {
     width: 100%;
 }
@@ -414,13 +400,13 @@ a {
         padding: 5rem;
     }
 }
-
 @media only screen and (max-width: 400px) {
     html {
         font-size: 48.5%;
     }
-    .input-text:not(:placeholder-shown)+.label,
-    .input-text:focus+.label {
+
+    .input-text:not(:placeholder-shown) + .label,
+    .input-text:focus + .label {
         top: 0.6rem;
         transform: scale(0.75);
     }
@@ -443,7 +429,6 @@ a {
     display: flex;
     gap: 2rem;
 }
-
 .modal {
     text-align: center;
     display: none;
@@ -456,7 +441,6 @@ a {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.4);
 }
-
 .modalContent {
     font-size: 20px;
     font-weight: bold;
@@ -466,20 +450,17 @@ a {
     border: 1px solid #888;
     width: 80%;
 }
-
 .close {
     color: rgb(255, 65, 65);
     float: right;
     font-size: 40px;
     font-weight: bold;
 }
-
 .close:hover,
 .close:focus {
     color: #ff1010;
     cursor: pointer;
 }
-
 .modalContent button {
     border: none;
     border-radius: 4px;
@@ -487,20 +468,17 @@ a {
     font-weight: bold;
     padding: 10px;
 }
-
 .del {
     background-color: rgb(255, 65, 65);
 }
-
 .del:hover {
     background-color: rgb(255, 7, 7);
 }
-
 .cancel:hover {
     background-color: rgb(167, 167, 167);
 }
 
-.container>.dropdown {
+.container > .dropdown {
     margin: 0 20px;
     vertical-align: top;
 }
@@ -576,7 +554,7 @@ a {
     outline-offset: -2px;
 }
 
-.dropdown-select>option {
+.dropdown-select > option {
     margin: 3px;
     padding: 6px 8px;
     text-shadow: none;
@@ -584,7 +562,6 @@ a {
     border-radius: 3px;
     cursor: pointer;
 }
-
 
 /* Fix for IE 8 putting the arrows behind the select element. */
 
@@ -599,7 +576,6 @@ a {
 .lt-ie9 .dropdown-select:focus {
     z-index: 3;
 }
-
 
 /* Dirty fix for Firefox adding padding where it shouldn't. */
 
@@ -712,7 +688,6 @@ a {
 .circular-menu.active .menu-item:nth-child(4) {
     transform: translate3d(-7em, 1em, 0);
 }
-
 
 /**
    * The other theme for this menu
