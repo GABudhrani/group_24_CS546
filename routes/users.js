@@ -1,15 +1,15 @@
 const express = require("express");
-const multer = require('multer') 
-const path = require('path')
+const multer = require("multer");
+const path = require("path");
 const { user } = require("../config/mongoCollections");
 const router = express.Router();
 const usersData = require("../data/users");
 const meetData = require("../data/meeting");
 const { v4: uuidv4 } = require("uuid");
-const xss = require('xss');
+const xss = require("xss");
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'public/uploads')
+        cb(null, "public/uploads");
     },
     filename: (req, file, cb) => {
         console.log("file:", file);
@@ -101,7 +101,18 @@ router.get("/meeting/:room/:pass", async (req, res) => {
             meetPass = xss(req.params.pass);
             const chckMeet = await meetData.checkMeet(meetId, meetPass);
             if (chckMeet.authenticated) {
-                res.status(200).render("sub_layout/room", { roomId: req.params.room, username: req.session.user.Username });
+                const addUserToMeet = await meetData.updateMeet(meetId, req.session.user.Username);
+
+                
+
+                req.session.user.meetId = meetId;
+
+                console.log(req.session.user.meetId);
+
+                res.status(200).render("sub_layout/room", {
+                    roomId: req.params.room,
+                    username: req.session.user.Username
+                });
             } else {
                 res.status(400).render("sub_layout/home", {
                     hasErrors: true,
@@ -120,11 +131,7 @@ router.get("/meeting/:room/:pass", async (req, res) => {
     }
 });
 
-router.get("/logout", async (req, res) => {
-    user_logout = req.session.user.Username.toLowerCase();
-    req.session.destroy();
-    res.render("sub_layout/login", { title: "Logout", username: user_logout });
-});
+
 
 router.post("/login", async (req, res) => {
     try {
@@ -135,7 +142,6 @@ router.post("/login", async (req, res) => {
 
         if (userCheck.authenticated) {
             req.session.user = { Username: username, UserType: xss(userCheck.userType) };
-            // console.log(req.session.user.UserType);
             res.redirect("/home");
             return;
         } else {
@@ -180,15 +186,20 @@ router.post("/signup", async (req, res) => {
         let fName = xss(req.body.fName);
         let lName = xss(req.body.lName);
         let userType = xss(req.body.Type);
-        let phonenumber=xss(req.body.phonenumber);
-        let dob=xss(req.body.dob)
+        let phonenumber = xss(req.body.phonenumber);
+        let dob = xss(req.body.dob);
 
         checkCreateUser(usernameSign, passwordSign);
-        const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName, userType, phonenumber,dob);
+        const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName, userType, phonenumber, dob);
         if (adduser.userInserted) {
             return res.redirect("/home");
         } else {
+<<<<<<< HEAD
             res.status(400).render("sub_layout/signup"), {
+=======
+            res.status(400).render("sub_layout/signup"),
+            {
+>>>>>>> 5badd2c91d50c6db275a4ed039b45741fd55dd7d
                 hasErrors: true,
                 error: "Error Occured",
                 title: "Signup",
@@ -219,10 +230,10 @@ router.get("/profile", async (req, res) => {
                 phonenumber: getUser.phonenumber,
                 dob: getUser.dob,
                 meetingList: getUser.meetings,
-                profilePic: getUser.profilePic
+                profilePic: getUser.profilePic,
             });
         } catch (e) {
-            console.log("err route prof:",e);
+            console.log("err route prof:", e);
         }
     }
 });
@@ -236,9 +247,9 @@ router.get("/editprofile", async (req, res) => {
             res.render("sub_layout/editprofile", {
                 firstName: getUser.firstName,
                 lastName: getUser.lastName,
-                dob: getUser.dob
+                dob: getUser.dob,
             });
-        } catch (e) {}
+        } catch (e) { }
     }
 });
 
@@ -285,7 +296,12 @@ router.post("/signup", async(req, res) => {
         if (adduser.userInserted) {
             return res.redirect("/home");
         } else {
+<<<<<<< HEAD
             res.status(400).render("sub_layout/signup"), {
+=======
+            res.status(400).render("sub_layout/signup"),
+            {
+>>>>>>> 5badd2c91d50c6db275a4ed039b45741fd55dd7d
                 hasErrors: true,
                 error: "Error Occured",
                 title: "Signup",
@@ -301,6 +317,20 @@ router.post("/signup", async(req, res) => {
     }
 });
 
+<<<<<<< HEAD
+=======
+router.get("/showParticipants", async (req, res) => {
+    if (!req.session.user) {
+        return res.redirect("/");
+    } else {
+        const meetObj = await meetData.getMeet(req.session.user.meetId);
+        const usersList = await usersData.getMeetParticipants(meetObj.participants);
+        res.render("sub_layout/showParticipants", { usersList: usersList });
+    }
+});
+
+
+>>>>>>> 5badd2c91d50c6db275a4ed039b45741fd55dd7d
 const checkCreateUser = function checkCreateUser(user, pass) {
     if (!user) throw [400, `Please provide a username`];
     if (!pass) throw [400, `Please provide a passowrd`];
@@ -314,4 +344,9 @@ const checkCreateUser = function checkCreateUser(user, pass) {
     if (pass.length < 6) throw [400, `Please enter a valid password(atleast 6 characters long)`];
 };
 
+<<<<<<< HEAD
 module.exports = router;
+=======
+
+module.exports = router;
+>>>>>>> 5badd2c91d50c6db275a4ed039b45741fd55dd7d

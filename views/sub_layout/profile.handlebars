@@ -19,6 +19,7 @@
     <p>Date Of Birth(YYYY-MM-DD): {{dob}}</p>
 
 
+<<<<<<< HEAD
   {{#if meetingList.length}}
 <p>Meeting history:</p>
 <ul>
@@ -26,10 +27,20 @@
     <li>{{this}}</li>
     {{/each}}
 </ul>
+=======
+{{#if meetingList.length}}
+    <p>Meeting history:</p>
+    <ul>
+        {{#each meetingList}}
+            <li>{{this}}</li>
+        {{/each}}
+    </ul>
+>>>>>>> 5badd2c91d50c6db275a4ed039b45741fd55dd7d
 
 {{else}}
     <p class="meeting-not-found">No meeting found</p>
 
+<<<<<<< HEAD
 </div> --}}
 
 <link rel="stylesheet" href="/public/css/editProfile.css" />
@@ -75,3 +86,14 @@
         </a>
     </div>
 </div>
+=======
+{{/if}}
+{{#if profilePic}}
+    <img style="border-radius: 50%; width:150px;"src="{{{profilePic}}}" alt="Image description">
+    <button url="{{profilePic}}">download</button>
+{{else}}
+    <p class="meeting-not-found">No Profile Pic found</p>
+{{/if}}
+<br>   
+<a id="Edit Profile" href="/editprofile">Edit Profile</a>
+>>>>>>> 5badd2c91d50c6db275a4ed039b45741fd55dd7d
