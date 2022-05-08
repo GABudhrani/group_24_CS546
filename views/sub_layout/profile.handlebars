@@ -1,18 +1,25 @@
-<h1>Profile</h1>
+ {{!-- <link rel="stylesheet" href="/public/css/editProfile.css" />
+<div class="card">
+    
+    {{#if profilePic}}
+        <img src="{{{profilePic}}}">
+        <button url="{{profilePic}}">download</button>
+        {{else}}
+        <p class="meeting-not-found">No Profile Pic found</p>
+    {{/if}}
+    <h1>{{username}}</h1>
+    <p>Email: {{email}}</p>
 
-<p>Username: {{username}}</p>
+    <p>FirstName: {{firstName}}</p>
 
-<p>Email: {{email}}</p>
+    <p>LastName: {{lastName}}</p>
 
-<p>FirstName: {{firstName}}</p>
+    <p>Phone Number: {{phonenumber}}</p>
 
-<p>LastName: {{lastName}}</p>
+    <p>Date Of Birth(YYYY-MM-DD): {{dob}}</p>
 
-<p>Phone Number: {{phonenumber}}</p>
 
-<p>Date Of Birth(YYYY-MM-DD): {{dob}}</p>
-
-{{#if meetingList.length}}
+  {{#if meetingList.length}}
 <p>Meeting history:</p>
 <ul>
     {{#each meetingList}}
@@ -23,15 +30,48 @@
 {{else}}
 <p class="meeting-not-found">No meeting found</p>
 
-{{/if}}
-{{#if profilePic}}
-    <img src="{{{profilePic}}}">
-    <button url="{{profilePic}}">download</button>
-    {{else}}
-    <p class="meeting-not-found">No Profile Pic found</p>
-{{/if}}
+</div> --}}
 
+<link rel="stylesheet" href="/public/css/editProfile.css" />
+<div class="wrapper">
+    <div class="img-area">
+        <div class="inner-area">
+            {{#if profilePic}}
+                <img src="{{{profilePic}}}">
+                <button url="{{profilePic}}">download</button>
+                {{else}}
+                <p class="meeting-not-found">No Profile Pic found</p>
+            {{/if}}
+        </div>
+    </div>
+<div class="name">{{username}}</div>
 
+    <hr class="horizon" />
+    <button class="about">About Me</button>
+    <div class="info">
+        <p>Email: {{email}}</p>
 
+        <p>FirstName: {{firstName}}</p>
 
-<a id="Edit Profile" href="/editprofile">Edit Profile</a>
+        <p>LastName: {{lastName}}</p>
+
+        <p>Phone Number: {{phonenumber}}</p>
+
+        <p>Date Of Birth(YYYY-MM-DD): {{dob}}</p>
+        {{#if meetingList.length}}
+            <p>Meeting history:</p>
+            <ul>
+                {{#each meetingList}}
+                <li>{{this}}</li>
+                {{/each}}
+            </ul>
+
+        {{else}}
+        <p class="meeting-not-found">No meeting found</p>
+        {{/if}}
+
+        <a href="/editprofile">
+            <button class="button">Edit Profile</button>      
+        </a>
+    </div>
+</div>

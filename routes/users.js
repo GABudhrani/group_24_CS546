@@ -1,5 +1,5 @@
 const express = require("express");
-const multer = require('multer') 
+const multer = require('multer')
 const path = require('path')
 const { user } = require("../config/mongoCollections");
 const router = express.Router();
@@ -12,18 +12,18 @@ const storage = multer.diskStorage({
         cb(null, 'public/uploads')
     },
     filename: (req, file, cb) => {
-        console.log("file:",file)
-        cb(null, Date.now()+path.extname(file.originalname))
+        console.log("file:", file)
+        cb(null, Date.now() + path.extname(file.originalname))
     }
 })
 
-const upload = multer({storage: storage})
+const upload = multer({ storage: storage })
 
-router.get("/", async (req, res) => {
+router.get("/", async(req, res) => {
     res.render("sub_layout/intro");
 });
 
-router.get("/login", async (req, res) => {
+router.get("/login", async(req, res) => {
     if (req.session.user) {
         return res.redirect("/home");
     } else {
@@ -31,7 +31,7 @@ router.get("/login", async (req, res) => {
     }
 });
 
-router.get("/home", async (req, res) => {
+router.get("/home", async(req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     } else {
@@ -42,7 +42,7 @@ router.get("/home", async (req, res) => {
         }
     }
 });
-router.get("/meeting", async (req, res) => {
+router.get("/meeting", async(req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     } else {
@@ -63,7 +63,7 @@ router.get("/meeting", async (req, res) => {
     }
 });
 
-router.post("/join", async (req, res) => {
+router.post("/join", async(req, res) => {
     if (!req.session.user) {
         return res.redirect("/");
     } else {
@@ -92,7 +92,7 @@ router.post("/join", async (req, res) => {
     }
 });
 
-router.get("/meeting/:room/:pass", async (req, res) => {
+router.get("/meeting/:room/:pass", async(req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     } else {
@@ -120,13 +120,13 @@ router.get("/meeting/:room/:pass", async (req, res) => {
     }
 });
 
-router.get("/logout", async (req, res) => {
+router.get("/logout", async(req, res) => {
     user_logout = req.session.user.Username.toLowerCase();
     req.session.destroy();
     res.render("sub_layout/login", { title: "Logout", username: user_logout });
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", async(req, res) => {
     try {
         let username = xss(req.body.username);
         let password = xss(req.body.password);
@@ -164,7 +164,7 @@ router.post("/login", async (req, res) => {
     }
 });
 
-router.get("/signup", async (req, res) => {
+router.get("/signup", async(req, res) => {
     if (req.session.user) {
         return res.redirect("/home");
     } else {
@@ -172,7 +172,7 @@ router.get("/signup", async (req, res) => {
     }
 });
 
-router.post("/signup", async (req, res) => {
+router.post("/signup", async(req, res) => {
     try {
         let usernameSign = xss(req.body.username);
         let passwordSign = xss(req.body.password);
@@ -180,20 +180,19 @@ router.post("/signup", async (req, res) => {
         let fName = xss(req.body.fName);
         let lName = xss(req.body.lName);
         let userType = xss(req.body.Type);
-        let phonenumber=xss(req.body.phonenumber);
-        let dob=xss(req.body.dob)
+        let phonenumber = xss(req.body.phonenumber);
+        let dob = xss(req.body.dob)
 
         checkCreateUser(usernameSign, passwordSign);
-        const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName, userType, phonenumber,dob);
+        const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName, userType, phonenumber, dob);
         if (adduser.userInserted) {
             return res.redirect("/home");
         } else {
-            res.status(400).render("sub_layout/signup"),
-                {
-                    hasErrors: true,
-                    error: "Error Occured",
-                    title: "Signup",
-                };
+            res.status(400).render("sub_layout/signup"), {
+                hasErrors: true,
+                error: "Error Occured",
+                title: "Signup",
+            };
         }
         return;
     } catch (e) {
@@ -206,7 +205,7 @@ router.post("/signup", async (req, res) => {
     }
 });
 
-router.get("/profile", async (req, res) => {
+router.get("/profile", async(req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     } else {
@@ -220,15 +219,15 @@ router.get("/profile", async (req, res) => {
                 phonenumber: getUser.phonenumber,
                 dob: getUser.dob,
                 meetingList: getUser.meetings,
-                profilePic: getUser.profilePic
+                profilePic: getUser.profilePic,
             });
         } catch (e) {
-            console.log("err route prof:",e);
+            console.log("err route prof:", e);
         }
     }
 });
 
-router.get("/editprofile", async (req, res) => {
+router.get("/editprofile", async(req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     } else {
@@ -243,14 +242,14 @@ router.get("/editprofile", async (req, res) => {
     }
 });
 
-router.post("/editprofile", upload.single('profilePic'),async (req, res) => {
-    console.log('file route:',req.file);
+router.post("/editprofile", upload.single('profilePic'), async(req, res) => {
+    console.log('file route:', req.file);
     try {
         let fname1 = xss(req.body.firstName);
         let lname1 = xss(req.body.lastName);
         let dob = xss(req.body.dob)
         let isPublic = xss(req.body.isPublic)
-        let imagePath = req.file ? 'public/uploads/'+req.file.filename : null;
+        let imagePath = req.file ? 'public/uploads/' + req.file.filename : null;
 
         const edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1, dob, isPublic, imagePath);
 
@@ -258,15 +257,14 @@ router.post("/editprofile", upload.single('profilePic'),async (req, res) => {
             return res.redirect("/profile");
         } else {
             return (
-                res.status(400).render("sub_layout/editprofile"),
-                {
+                res.status(400).render("sub_layout/editprofile"), {
                     hasErrors: true,
                     error: "Error Occured",
                 }
             );
         }
     } catch (e) {
-        console.log("err route:",e);
+        console.log("err route:", e);
         res.status(e[0]).render("sub_layout/editprofile", {
             hasErrors: true,
             error: e[1],
@@ -275,7 +273,7 @@ router.post("/editprofile", upload.single('profilePic'),async (req, res) => {
     }
 });
 
-router.post("/signup", async (req, res) => {
+router.post("/signup", async(req, res) => {
     try {
         let usernameSign = xss(req.body.username);
         let passwordSign = xss(req.body.password);
@@ -287,12 +285,11 @@ router.post("/signup", async (req, res) => {
         if (adduser.userInserted) {
             return res.redirect("/home");
         } else {
-            res.status(400).render("sub_layout/signup"),
-                {
-                    hasErrors: true,
-                    error: "Error Occured",
-                    title: "Signup",
-                };
+            res.status(400).render("sub_layout/signup"), {
+                hasErrors: true,
+                error: "Error Occured",
+                title: "Signup",
+            };
         }
         return;
     } catch (e) {

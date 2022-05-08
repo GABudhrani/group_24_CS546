@@ -78,9 +78,7 @@
                 <div class="text-content">
                     <div class="bold">You want</div>
                     <div class="big">
-                        <button id="myBtn" style="cursor: pointer">
-                            Join a Meeting
-                        </button>
+                        <button id="myBtn" style="cursor: pointer">Join Meeting</button>
                     </div>
                 </div>
             </div>
@@ -97,13 +95,13 @@
                     <form action="/join" method="post">
                         <div class="input-wrapper">
                             <label for="room">
-                                <input type="text" id="room" placeholder="Enter a Meet-ID" name="room" />
+                                <input type="text" id="room" placeholder="Enter a Meet-ID" name="room" required/>
                             </label>
                             <i class="bx bxs-user-circle"></i>
                         </div>
                         <div class="input-wrapper">
                             <label for="pass">
-                                <input type="password" name="pass" id="pass" placeholder="Enter a Meet Passcode" />
+                                <input type="password" name="pass" id="pass" placeholder="Enter a Meet Passcode" required/>
                             </label>
                             <i class="bx bx-key"></i>
                         </div>
