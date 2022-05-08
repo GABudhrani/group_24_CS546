@@ -1,10 +1,23 @@
 const express = require("express");
+const multer = require('multer') 
+const path = require('path')
 const { user } = require("../config/mongoCollections");
 const router = express.Router();
 const usersData = require("../data/users");
 const meetData = require("../data/meeting");
 const { v4: uuidv4 } = require("uuid");
 const xss = require('xss');
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/uploads')
+    },
+    filename: (req, file, cb) => {
+        console.log("file:",file)
+        cb(null, Date.now()+path.extname(file.originalname))
+    }
+})
+
+const upload = multer({storage: storage})
 
 router.get("/", async (req, res) => {
     res.render("sub_layout/intro");
@@ -206,9 +219,12 @@ router.get("/profile", async (req, res) => {
                 lastName: getUser.lastName,
                 phonenumber: getUser.phonenumber,
                 dob: getUser.dob,
-                meetingList: getUser.meetings
+                meetingList: getUser.meetings,
+                profilePic: getUser.profilePic
             });
-        } catch (e) {}
+        } catch (e) {
+            console.log("err route prof:",e);
+        }
     }
 });
 
@@ -227,14 +243,16 @@ router.get("/editprofile", async (req, res) => {
     }
 });
 
-router.post("/editprofile", async (req, res) => {
+router.post("/editprofile", upload.single('profilePic'),async (req, res) => {
+    console.log('file route:',req.file);
     try {
         let fname1 = xss(req.body.firstName);
         let lname1 = xss(req.body.lastName);
         let dob = xss(req.body.dob)
         let isPublic = xss(req.body.isPublic)
+        let imagePath = req.file ? 'public/uploads/'+req.file.filename : null;
 
-        const edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1, dob, isPublic);
+        const edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1, dob, isPublic, imagePath);
 
         if (edituser) {
             return res.redirect("/profile");
@@ -248,6 +266,7 @@ router.post("/editprofile", async (req, res) => {
             );
         }
     } catch (e) {
+        console.log("err route:",e);
         res.status(e[0]).render("sub_layout/editprofile", {
             hasErrors: true,
             error: e[1],

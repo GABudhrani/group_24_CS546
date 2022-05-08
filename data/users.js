@@ -69,7 +69,7 @@ module.exports = {
         }
     },
 
-    async editUser(username, fName, lName, dob, isPublic) {
+    async editUser(username, fName, lName, dob, isPublic, imagePath=null) {
         try {
             var count = 0;
             const usercol = await userCollection();
@@ -110,6 +110,14 @@ module.exports = {
                 );
             }
 
+            if (chckForUser.imagePath !== imagePath) {
+                count += 1;
+                var updatedInfo = await usercol.updateOne(
+                    { _id: ObjectId(chckForUser._id) },
+                    { $set: { profilePic: imagePath } }
+                );
+            }
+
             console.log(await this.getUser(username));
 
             if (count > 0) {
@@ -118,7 +126,9 @@ module.exports = {
             else {
                 return false
             }
-        } catch (e) {
+            return updatedInfo;
+        }catch(e){
+            console.log("err:",e);
             throw e;
         }
     },
