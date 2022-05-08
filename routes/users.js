@@ -37,7 +37,6 @@ router.get("/meeting", async (req, res) => {
         meetPass = meetData.makeid();
         const addmeet = await meetData.createmeet(meetId, meetPass);
         const addMeetuser = await usersData.addMeeting(req.session.user.Username);
-        console.log(addMeetuser)
         if (addmeet.meetCreated && addMeetuser) {
             res.redirect(`/meeting/${meetId}/${meetPass}`);
         } else {
@@ -59,7 +58,8 @@ router.post("/join", async (req, res) => {
             meetId = xss(req.body.room);
             meetPass = xss(req.body.pass);
             const chckMeet = await meetData.checkMeet(meetId, meetPass);
-            if (chckMeet.authenticated) {
+            const addMeetuser = await usersData.addMeeting(req.session.user.Username);
+            if (chckMeet.authenticated && addMeetuser) {
                 res.redirect(`/meeting/${meetId}/${meetPass}`);
             } else {
                 res.status(400).render("sub_layout/home", {
@@ -232,8 +232,9 @@ router.post("/editprofile", async (req, res) => {
         let fname1 = xss(req.body.firstName);
         let lname1 = xss(req.body.lastName);
         let dob = xss(req.body.dob)
+        let isPublic = xss(req.body.isPublic)
 
-        const edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1, dob);
+        const edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1, dob, isPublic);
 
         if (edituser) {
             return res.redirect("/profile");
