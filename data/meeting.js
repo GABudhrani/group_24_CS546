@@ -3,7 +3,7 @@ const mongoCollections = require("../config/mongoCollections");
 const meetCollection = mongoCollections.meet;
 
 const bcrypt = require("bcryptjs");
-const saltRound = 14;
+const saltRound = 12;
 const makeid = function makeid() {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -17,13 +17,13 @@ module.exports = {
             const meetcol = await meetCollection();
             let haspass = await bcrypt.hash(meetPass, saltRound);
 
-            const newMeet = { 
-                meetId: meetId, 
-                meetPassword: haspass, 
-                DateStartTime: new Date().toUTCString() 
+            const newMeet = {
+                meetId: meetId,
+                meetPassword: haspass,
+                DateStartTime: new Date().toUTCString(),
             };
             const addMeet = await meetcol.insertOne(newMeet);
-            
+
             if (addMeet) {
                 return { meetCreated: true };
             } else {

@@ -4,7 +4,7 @@ const router = express.Router();
 const usersData = require("../data/users");
 const meetData = require("../data/meeting");
 const { v4: uuidv4 } = require("uuid");
-const xss = require('xss');
+const xss = require("xss");
 
 router.get("/", async (req, res) => {
     res.render("sub_layout/intro");
@@ -37,7 +37,7 @@ router.get("/meeting", async (req, res) => {
         meetPass = meetData.makeid();
         const addmeet = await meetData.createmeet(meetId, meetPass);
         const addMeetuser = await usersData.addMeeting(req.session.user.Username);
-        console.log(addMeetuser)
+        console.log(addMeetuser);
         if (addmeet.meetCreated && addMeetuser) {
             res.redirect(`/meeting/${meetId}/${meetPass}`);
         } else {
@@ -167,11 +167,11 @@ router.post("/signup", async (req, res) => {
         let fName = xss(req.body.fName);
         let lName = xss(req.body.lName);
         let userType = xss(req.body.Type);
-        let phonenumber=xss(req.body.phonenumber);
-        let dob=xss(req.body.dob)
+        let phonenumber = xss(req.body.phonenumber);
+        let dob = xss(req.body.dob);
 
         checkCreateUser(usernameSign, passwordSign);
-        const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName, userType, phonenumber,dob);
+        const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName, userType, phonenumber, dob);
         if (adduser.userInserted) {
             return res.redirect("/home");
         } else {
@@ -206,7 +206,7 @@ router.get("/profile", async (req, res) => {
                 lastName: getUser.lastName,
                 phonenumber: getUser.phonenumber,
                 dob: getUser.dob,
-                meetingList: getUser.meetings
+                meetingList: getUser.meetings,
             });
         } catch (e) {}
     }
@@ -221,7 +221,7 @@ router.get("/editprofile", async (req, res) => {
             res.render("sub_layout/editprofile", {
                 firstName: getUser.firstName,
                 lastName: getUser.lastName,
-                dob: getUser.dob
+                dob: getUser.dob,
             });
         } catch (e) {}
     }
@@ -231,7 +231,7 @@ router.post("/editprofile", async (req, res) => {
     try {
         let fname1 = xss(req.body.firstName);
         let lname1 = xss(req.body.lastName);
-        let dob = xss(req.body.dob)
+        let dob = xss(req.body.dob);
 
         const edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1, dob);
 
@@ -283,7 +283,6 @@ router.post("/signup", async (req, res) => {
         return;
     }
 });
-
 
 const checkCreateUser = function checkCreateUser(user, pass) {
     if (!user) throw [400, `Please provide a username`];
