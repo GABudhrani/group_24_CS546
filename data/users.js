@@ -69,53 +69,27 @@ module.exports = {
         }
     },
 
-    async editUser(username, fName, lName, dob) {
+    async editUser(username, fName, lName, dob, imagePath=null) {
         try {
-            var count=0;
+            console.log("input:",username, imagePath);
             const usercol = await userCollection();
             const chckForUser = await usercol.findOne({ username: username });
             if(!fName){fName=chckForUser.fName}
             if(!lName){lName=chckForUser.lName}
             if(!dob){dob=chckForUser.dob}
+            if(!imagePath){imagePath=chckForUser.imagePath}
+            let updatedInfo;
+            updatedInfo = await usercol.updateOne(
+                { _id: ObjectId(chckForUser._id) },
+                { $set: { firstName: fName, lastName: lName, dob:dob, profilePic:imagePath} }
+            );
 
-            if(chckForUser.fName!==fName){
-                    count+=1;
-                    var updatedInfo = await usercol.updateOne(
-                    { _id: ObjectId(chckForUser._id) },
-                    { $set: { firstName: fName } }
-                );    
+            if (updatedInfo.modifiedCount === 0) {
+                throw "could not update user successfully";
             }
-            
-            if(chckForUser.lName!==lName){
-                    count+=1;
-                    var updatedInfo = await usercol.updateOne(
-                    { _id: ObjectId(chckForUser._id) },
-                    { $set: { lastName: lName } }
-                );
-            }
-            if(chckForUser.dob!==dob){
-                    count+=1;
-                    var updatedInfo = await usercol.updateOne(
-                    { _id: ObjectId(chckForUser._id) },
-                    { $set: { dob:dob } }
-                );
-            }
-
-            // const updatedInfo = await usercol.updateOne(
-            //     { _id: ObjectId(chckForUser._id) },
-            //     { $set: { firstName: fName, lastName: lName, dob:dob } }
-            // );
-
-            // if (updatedInfo.modifiedCount === 0) {
-            //     throw "could not update user successfully";
-            // }
-            if(count>0){
-                return true;
-            }
-            else{
-                return false
-            }
-        } catch (e) {
+            return updatedInfo;
+        }catch(e){
+            console.log("err:",e);
             throw e;
         }
     },

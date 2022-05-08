@@ -4,6 +4,9 @@ const socket = io("/", {
 const videoGrid = document.getElementById("video-grid");
 const myVideo = document.createElement("video");
 const showChat = document.querySelector("#showChat");
+const showParticipants = document.querySelector("#showParticipants");
+const stopVideorecord = document.querySelector("#stopVideorecord");
+const recordVideo = document.querySelector("#recordVideo");
 const backBtn = document.querySelector(".header__back");
 const ROOM_ID = document.getElementById("room").getAttribute("data-roomid");
 myVideo.muted = true;
@@ -22,8 +25,17 @@ showChat.addEventListener("click", () => {
     document.querySelector(".header__back").style.display = "block";
 });
 
+showParticipants.addEventListener("click", () => {
+    alert("Hello\nHow are you?");
+});
+// let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+
 const user = document.getElementById("room").getAttribute("usernameJ");
-// alert(user);
+myVideo.setAttribute("id", user);
+mylabel = document.createElement("label");
+mylabel.setAttribute("for", user);
+mylabel.innerHTML = user;
+myVideo.appendChild(mylabel);
 video = "";
 var peer = new Peer(undefined, {
     path: "/peerjs",
@@ -37,7 +49,7 @@ navigator.mediaDevices
         audio: true,
         video: true,
     })
-    .then((stream) => {
+    .then(async (stream) => {
         myVideoStream = stream;
         addVideoStream(myVideo, stream);
 
@@ -45,7 +57,11 @@ navigator.mediaDevices
             call.answer(stream);
             const video = document.createElement("video");
             video.setAttribute("id", call.peer);
-            alert("user id set");
+            label = document.createElement("label");
+            label.setAttribute("for", call.peer);
+            label.innerHTML = call.peer;
+            label.appendChild(label);
+            // alert("user id set");
             call.on("stream", (userVideoStream) => {
                 addVideoStream(video, userVideoStream);
             });
@@ -55,22 +71,43 @@ navigator.mediaDevices
             connectToNewUser(userId, userName_team, stream);
         });
         socket.on("user-disconnected", (userId) => {
-            // alert("user disconnected");
-            removeuser(userId, stream);
+            const call = peer.call(userId, stream);
+            document.getElementById(call.peer).remove();
+        });
+        let recorder = RecordRTC(stream, {
+            type: "video",
+        });
+        recordVideo.addEventListener("click", () => {
+            stopVideorecord.style.display = "flex";
+            recordVideo.style.display = "none";
+            recorder.startRecording();
+        });
+        stopVideorecord.addEventListener("click", () => {
+            stopVideorecord.style.display = "none";
+            recordVideo.style.display = "flex";
+            recorder.stopRecording(function () {
+                let blob = recorder.getBlob();
+                invokeSaveAsDialog(blob, user + ".webm");
+            });
         });
     });
 const removeuser = (userId, stream) => {
-    // alert("userleft");
     const call = peer.call(userId, stream);
     document.getElementById(call.peer).remove();
 };
+
 const connectToNewUser = (userId, userName_team, stream) => {
     alert(userName_team + " joined");
+    // tempAlert("close", 5000);
     const call = peer.call(userId, stream);
     video = document.createElement("video");
     video.setAttribute("id", call.peer);
     call.on("stream", (userVideoStream) => {
-        addVideoStream(video, userVideoStream);
+        video.srcObject = userVideoStream;
+        video.addEventListener("loadedmetadata", () => {
+            video.play();
+            videoGrid.append(video);
+        });
     });
 };
 
@@ -143,7 +180,7 @@ function leaveMeet() {
 
 inviteButton.addEventListener("click", (e) => {
     url = window.location.href.split("/");
-    str = "Meet id:- " + url[4] + "\npasscode:- " + url[5];
+    str = "Website:- https://joinuser.herokuapp.com/" + "\n" + "Meet id:- " + url[4] + "\npasscode:- " + url[5];
     prompt("Copy to clipboard: Ctrl+C, Enter", str);
     // alert(str);
 });
@@ -156,3 +193,14 @@ socket.on("createMessage", (message, userName) => {
         <span>${message}</span>
     </div>`;
 });
+function tempAlert(msg, duration) {
+    var el = document.createElement("div");
+    el.setAttribute("style", "position:absolute;top:40%;left:20%;background-color:white;");
+    el.innerHTML = msg;
+    setTimeout(function () {
+        el.parentNode.removeChild(el);
+    }, duration);
+    document.body.appendChild(el);
+}
+
+// socket.emit("merged", audioName.split(".")[0] + "-merged.webm");

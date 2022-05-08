@@ -26,7 +26,6 @@ app.set("view engine", "handlebars");
 const path = require("path");
 const session = require("express-session");
 
-
 app.use(
     session({
         name: "AuthCookie",
@@ -84,10 +83,8 @@ io.on("connection", (socket) => {
             // socket.disconnect();
             socket.to(roomId).emit("user-disconnected", userId);
         });
-        // socket.on("disconnecting", () => this.disconnect());
     });
 });
-
 
 server.listen(process.env.PORT || 443, () => {
     console.log("We've now got a server!");
