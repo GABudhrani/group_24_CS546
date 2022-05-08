@@ -45,7 +45,6 @@ navigator.mediaDevices
             call.answer(stream);
             const video = document.createElement("video");
             video.setAttribute("id", call.peer);
-            alert("user id set");
             call.on("stream", (userVideoStream) => {
                 addVideoStream(video, userVideoStream);
             });
@@ -60,7 +59,7 @@ navigator.mediaDevices
         });
     });
 const removeuser = (userId, stream) => {
-    // alert("userleft");
+    alert("userleft");
     const call = peer.call(userId, stream);
     document.getElementById(call.peer).remove();
 };
