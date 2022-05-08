@@ -1,23 +1,23 @@
 const express = require("express");
-const multer = require('multer') 
-const path = require('path')
+const multer = require("multer");
+const path = require("path");
 const { user } = require("../config/mongoCollections");
 const router = express.Router();
 const usersData = require("../data/users");
 const meetData = require("../data/meeting");
 const { v4: uuidv4 } = require("uuid");
-const xss = require('xss');
+const xss = require("xss");
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'public/uploads')
+        cb(null, "public/uploads");
     },
     filename: (req, file, cb) => {
-        console.log("file:",file)
-        cb(null, Date.now()+path.extname(file.originalname))
-    }
-})
+        console.log("file:", file);
+        cb(null, Date.now() + path.extname(file.originalname));
+    },
+});
 
-const upload = multer({storage: storage})
+const upload = multer({ storage: storage });
 
 router.get("/", async (req, res) => {
     res.render("sub_layout/intro");
@@ -50,7 +50,6 @@ router.get("/meeting", async (req, res) => {
         meetPass = meetData.makeid();
         const addmeet = await meetData.createmeet(meetId, meetPass);
         const addMeetuser = await usersData.addMeeting(req.session.user.Username);
-        console.log(addMeetuser)
         if (addmeet.meetCreated && addMeetuser) {
             res.redirect(`/meeting/${meetId}/${meetPass}`);
         } else {
@@ -72,7 +71,8 @@ router.post("/join", async (req, res) => {
             meetId = xss(req.body.room);
             meetPass = xss(req.body.pass);
             const chckMeet = await meetData.checkMeet(meetId, meetPass);
-            if (chckMeet.authenticated) {
+            const addMeetuser = await usersData.addMeeting(req.session.user.Username);
+            if (chckMeet.authenticated && addMeetuser) {
                 res.redirect(`/meeting/${meetId}/${meetPass}`);
             } else {
                 res.status(400).render("sub_layout/home", {
@@ -180,11 +180,11 @@ router.post("/signup", async (req, res) => {
         let fName = xss(req.body.fName);
         let lName = xss(req.body.lName);
         let userType = xss(req.body.Type);
-        let phonenumber=xss(req.body.phonenumber);
-        let dob=xss(req.body.dob)
+        let phonenumber = xss(req.body.phonenumber);
+        let dob = xss(req.body.dob);
 
         checkCreateUser(usernameSign, passwordSign);
-        const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName, userType, phonenumber,dob);
+        const adduser = await usersData.createUser(usernameSign, passwordSign, email, fName, lName, userType, phonenumber, dob);
         if (adduser.userInserted) {
             return res.redirect("/home");
         } else {
@@ -220,10 +220,10 @@ router.get("/profile", async (req, res) => {
                 phonenumber: getUser.phonenumber,
                 dob: getUser.dob,
                 meetingList: getUser.meetings,
-                profilePic: getUser.profilePic
+                profilePic: getUser.profilePic,
             });
         } catch (e) {
-            console.log("err route prof:",e);
+            console.log("err route prof:", e);
         }
     }
 });
@@ -237,22 +237,22 @@ router.get("/editprofile", async (req, res) => {
             res.render("sub_layout/editprofile", {
                 firstName: getUser.firstName,
                 lastName: getUser.lastName,
-                dob: getUser.dob
+                dob: getUser.dob,
             });
         } catch (e) {}
     }
 });
 
-router.post("/editprofile", upload.single('profilePic'),async (req, res) => {
-    console.log('file route:',req.file);
+router.post("/editprofile", upload.single("profilePic"), async (req, res) => {
+    console.log("file route:", req.file);
     try {
         let fname1 = xss(req.body.firstName);
         let lname1 = xss(req.body.lastName);
-        // reomove dob ternary after adding dob to edit form
-        let dob = req.body.dob ? xss(req.body.dob) : '1998/03/16';
-        let imagePath = req.file ? 'public/uploads/'+req.file.filename : null;
+        let dob = xss(req.body.dob);
+        let isPublic = xss(req.body.isPublic);
+        let imagePath = req.file ? "public/uploads/" + req.file.filename : null;
 
-        let edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1, dob ,imagePath);
+        const edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1, dob, isPublic, imagePath);
 
         if (edituser) {
             return res.redirect("/profile");
@@ -266,7 +266,7 @@ router.post("/editprofile", upload.single('profilePic'),async (req, res) => {
             );
         }
     } catch (e) {
-        console.log("err route:",e);
+        console.log("err route:", e);
         res.status(e[0]).render("sub_layout/editprofile", {
             hasErrors: true,
             error: e[1],
@@ -303,7 +303,6 @@ router.post("/signup", async (req, res) => {
         return;
     }
 });
-
 
 const checkCreateUser = function checkCreateUser(user, pass) {
     if (!user) throw [400, `Please provide a username`];
