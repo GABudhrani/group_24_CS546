@@ -30,7 +30,7 @@ showParticipants.addEventListener("click", () => {
 });
 // let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
 
-const user = document.getElementById("room").getAttribute("usernameJ");
+const user = document.getElementById("userS").getAttribute("userName");
 myVideo.setAttribute("id", user);
 mylabel = document.createElement("label");
 mylabel.setAttribute("for", user);
@@ -57,10 +57,10 @@ navigator.mediaDevices
             call.answer(stream);
             const video = document.createElement("video");
             video.setAttribute("id", call.peer);
-            label = document.createElement("label");
-            label.setAttribute("for", call.peer);
-            label.innerHTML = call.peer;
-            label.appendChild(label);
+            label1 = document.createElement("label");
+            label1.setAttribute("for", call.peer);
+            label1.innerHTML = call.peer;
+            video.appendChild(label1);
             // alert("user id set");
             call.on("stream", (userVideoStream) => {
                 addVideoStream(video, userVideoStream);
@@ -102,6 +102,10 @@ const connectToNewUser = (userId, userName_team, stream) => {
     const call = peer.call(userId, stream);
     video = document.createElement("video");
     video.setAttribute("id", call.peer);
+    label1 = document.createElement("label");
+    label1.setAttribute("for", call.peer);
+    label1.innerHTML = call.peer;
+    video.appendChild(label1);
     call.on("stream", (userVideoStream) => {
         video.srcObject = userVideoStream;
         video.addEventListener("loadedmetadata", () => {
