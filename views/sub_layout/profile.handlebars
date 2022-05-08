@@ -8,4 +8,21 @@
 
 <p>LastName: {{lastName}}</p>
 
+<p>Phone Number: {{phonenumber}}</p>
+
+<p>Date Of Birth(YYYY-MM-DD): {{dob}}</p>
+
+{{#if meetingList.length}}
+<p>Meeting history:</p>
+<ul>
+    {{#each meetingList}}
+    <li>{{this}}</li>
+    {{/each}}
+</ul>
+
+{{else}}
+<p class="meeting-not-found">No meeting found</p>
+
+{{/if}}
+
 <a id="Edit Profile" href="/editprofile">Edit Profile</a>

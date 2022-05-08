@@ -15,10 +15,15 @@ module.exports = {
     async createmeet(meetId, meetPass) {
         try {
             const meetcol = await meetCollection();
-            // const chckForUser = await usercol.findOne({ username: username });
             let haspass = await bcrypt.hash(meetPass, saltRound);
-            const newMeet = { meetId: meetId, meetPassword: haspass, DateStartTime: new Date().toUTCString() };
+
+            const newMeet = { 
+                meetId: meetId, 
+                meetPassword: haspass, 
+                DateStartTime: new Date().toUTCString() 
+            };
             const addMeet = await meetcol.insertOne(newMeet);
+            
             if (addMeet) {
                 return { meetCreated: true };
             } else {

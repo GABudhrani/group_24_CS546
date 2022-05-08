@@ -4,6 +4,7 @@ const socket = io("/", {
 const videoGrid = document.getElementById("video-grid");
 const myVideo = document.createElement("video");
 const showChat = document.querySelector("#showChat");
+const showParticipants = document.querySelector("#showParticipants");
 const backBtn = document.querySelector(".header__back");
 const ROOM_ID = document.getElementById("room").getAttribute("data-roomid");
 myVideo.muted = true;
@@ -22,8 +23,11 @@ showChat.addEventListener("click", () => {
     document.querySelector(".header__back").style.display = "block";
 });
 
+showParticipants.addEventListener("click", () => {
+    alert("Hello\nHow are you?");
+});
+
 const user = document.getElementById("room").getAttribute("usernameJ");
-// alert(user);
 video = "";
 var peer = new Peer(undefined, {
     path: "/peerjs",
@@ -40,7 +44,7 @@ navigator.mediaDevices
     .then((stream) => {
         myVideoStream = stream;
         addVideoStream(myVideo, stream);
-
+        alert("user id set");
         peer.on("call", (call) => {
             call.answer(stream);
             const video = document.createElement("video");
@@ -54,12 +58,11 @@ navigator.mediaDevices
             connectToNewUser(userId, userName_team, stream);
         });
         socket.on("user-disconnected", (userId) => {
-            // alert("user disconnected");
             removeuser(userId, stream);
         });
     });
 const removeuser = (userId, stream) => {
-    alert("userleft");
+    // alert("userleft");
     const call = peer.call(userId, stream);
     document.getElementById(call.peer).remove();
 };
