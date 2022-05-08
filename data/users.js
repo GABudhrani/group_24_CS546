@@ -69,7 +69,7 @@ module.exports = {
         }
     },
 
-    async editUser(username, fName, lName, imagePath=null) {
+    async editUser(username, fName, lName, dob, imagePath=null) {
         try {
             console.log("input:",username, imagePath);
             const usercol = await userCollection();
@@ -87,7 +87,9 @@ module.exports = {
             if (updatedInfo.modifiedCount === 0) {
                 throw "could not update user successfully";
             }
+            return updatedInfo;
         }catch(e){
+            console.log("err:",e);
             throw e;
         }
     },

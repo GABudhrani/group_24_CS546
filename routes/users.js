@@ -248,15 +248,11 @@ router.post("/editprofile", upload.single('profilePic'),async (req, res) => {
     try {
         let fname1 = xss(req.body.firstName);
         let lname1 = xss(req.body.lastName);
-        let dob = xss(req.body.dob)
-        let edituser;
-        if(req.file){
-           let imagePath = 'public/uploads/'+req.file.filename;
-           edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1, dob ,imagePath);
-        }
-        else{
-            edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1, dob);
-        }
+        // reomove dob ternary after adding dob to edit form
+        let dob = req.body.dob ? xss(req.body.dob) : '1998/03/16';
+        let imagePath = req.file ? 'public/uploads/'+req.file.filename : null;
+
+        let edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1, dob ,imagePath);
 
         if (edituser) {
             return res.redirect("/profile");
