@@ -30,7 +30,8 @@ module.exports = {
                     lastName: lName,
                     phonenumber: phonenumber,
                     role: userType,
-                    dob:dob,
+                    isPublic: false,
+                    dob: dob,
                     meetings: [],
                 };
                 const addUser = await usercol.insertOne(newUser);
@@ -66,8 +67,6 @@ module.exports = {
         } catch (e) {
             throw e;
         }
-
-
     },
 
     async editUser(username, fName, lName, imagePath=null) {
@@ -75,24 +74,20 @@ module.exports = {
             console.log("input:",username, imagePath);
             const usercol = await userCollection();
             const chckForUser = await usercol.findOne({ username: username });
+            if(!fName){fName=chckForUser.fName}
+            if(!lName){lName=chckForUser.lName}
+            if(!dob){dob=chckForUser.dob}
+            if(!imagePath){imagePath=chckForUser.imagePath}
             let updatedInfo;
-            if(imagePath){
-                updatedInfo = await usercol.updateOne(
-                    { _id: ObjectId(chckForUser._id) },
-                    { $set: { firstName: fName, lastName: lName , profilePic:imagePath} }
-                );
-            }else{
-                updatedInfo = await usercol.updateOne(
-                    { _id: ObjectId(chckForUser._id) },
-                    { $set: { firstName: fName, lastName: lName} }
-                );
-            }
+            updatedInfo = await usercol.updateOne(
+                { _id: ObjectId(chckForUser._id) },
+                { $set: { firstName: fName, lastName: lName, dob:dob, profilePic:imagePath} }
+            );
+
             if (updatedInfo.modifiedCount === 0) {
                 throw "could not update user successfully";
             }
-            return true;
-        } catch (e) {
-            console.log("err",e);
+        }catch(e){
             throw e;
         }
     },

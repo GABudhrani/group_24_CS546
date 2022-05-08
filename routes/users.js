@@ -237,6 +237,7 @@ router.get("/editprofile", async (req, res) => {
             res.render("sub_layout/editprofile", {
                 firstName: getUser.firstName,
                 lastName: getUser.lastName,
+                dob: getUser.dob
             });
         } catch (e) {}
     }
@@ -247,14 +248,16 @@ router.post("/editprofile", upload.single('profilePic'),async (req, res) => {
     try {
         let fname1 = xss(req.body.firstName);
         let lname1 = xss(req.body.lastName);
+        let dob = xss(req.body.dob)
         let edituser;
         if(req.file){
            let imagePath = 'public/uploads/'+req.file.filename;
-           edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1, imagePath);
+           edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1, dob ,imagePath);
         }
         else{
-            edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1);
+            edituser = await usersData.editUser(xss(req.session.user.Username), fname1, lname1, dob);
         }
+
         if (edituser) {
             return res.redirect("/profile");
         } else {
