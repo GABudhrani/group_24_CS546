@@ -25,10 +25,10 @@
 
 {{/if}}
 {{#if profilePic}}
-    <img src="{{{profilePic}}}">
+    <img style="border-radius: 50%; width:150px;"src="{{{profilePic}}}" alt="Image description">
     <button url="{{profilePic}}">download</button>
     {{else}}
     <p class="meeting-not-found">No Profile Pic found</p>
 {{/if}}
-
+<br>   
 <a id="Edit Profile" href="/editprofile">Edit Profile</a>
