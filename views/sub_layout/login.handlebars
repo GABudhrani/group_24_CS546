@@ -4,18 +4,20 @@
             <h1 class="heading-primary">Log in<span class="span-blue">.</span></h1>
             <p class="text-mute">Enter your credentials to access your account.</p>
             {{#if error}}
-                <p class="error">{{error}}</p>
+                <p class="bar error">{{error}}</p>
             {{/if}}
             <form class="login-form" action="/login" method="post" id="login-form">
                 <label class="inp">
                     <input type="text" class="input-text" placeholder="&nbsp;" name="username" id="username" />
-                    <span class="label">Email</span>
+                    <span class="label">username</span>
                     <span class="input-icon"><i class="fa-solid fa-envelope"></i></span>
+                    <div class="error"></div>
                 </label>
-                <label class="inp">
+                <label class="inp form-control">
                     <input type="password" class="input-text" placeholder="&nbsp;" id="password" name="password" />
                     <span class="label">Password</span>
                     <span class="input-icon input-icon-password" data-password><i class="fa-solid fa-eye"></i></span>
+                    <div class="error"></div>
                 </label>
                 <button type="submit" class="btn btn-login">Login</button>
             </form>
