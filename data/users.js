@@ -17,10 +17,15 @@ module.exports = {
             const chckForUser = await usercol.findOne({ username: username });
             const checkphone = await usercol.findOne({ phonenumber: phonenumber });
             const checkemail = await usercol.findOne({ email: email });
-            if (chckForUser) { throw [400, `User Already Exists`]; }
-            if (checkphone) { throw [400, `Another Account exists with same phone number`] }
-            if (checkemail) { throw [400, `Another Account exists with same Email Address`] }
-            else {
+            if (chckForUser) {
+                throw [400, `User Already Exists`];
+            }
+            if (checkphone) {
+                throw [400, `Another Account exists with same phone number`];
+            }
+            if (checkemail) {
+                throw [400, `Another Account exists with same Email Address`];
+            } else {
                 let haspass = await bcrypt.hash(password, saltRound);
                 const newUser = {
                     username: username,
@@ -53,15 +58,12 @@ module.exports = {
             const usercol = await userCollection();
             const chckForUser = await usercol.findOne({ username: username });
 
-            const updatedInfo = await usercol.updateOne(
-                { _id: ObjectId(chckForUser._id) },
-                { $addToSet: { meetings: new Date().toUTCString() } }
-            );
+            const updatedInfo = await usercol.updateOne({ _id: ObjectId(chckForUser._id) }, { $addToSet: { meetings: new Date().toUTCString() } });
 
             const upUserr = await this.getUser(username);
 
             if (updatedInfo.modifiedCount === 0) {
-                throw 'could not update user successfully';
+                throw "could not update user successfully";
             }
             return true;
         } catch (e) {
@@ -74,55 +76,45 @@ module.exports = {
             var count = 0;
             const usercol = await userCollection();
             const chckForUser = await usercol.findOne({ username: username });
-            if (!fName) { fName = chckForUser.fName }
-            if (!lName) { lName = chckForUser.lName }
-            if (!dob) { dob = chckForUser.dob }
+            if (!fName) {
+                fName = chckForUser.fName;
+            }
+            if (!lName) {
+                lName = chckForUser.lName;
+            }
+            if (!dob) {
+                dob = chckForUser.dob;
+            }
 
             if (chckForUser.fName !== fName) {
                 count += 1;
-                var updatedInfo = await usercol.updateOne(
-                    { _id: ObjectId(chckForUser._id) },
-                    { $set: { firstName: fName } }
-                );
+                var updatedInfo = await usercol.updateOne({ _id: ObjectId(chckForUser._id) }, { $set: { firstName: fName } });
             }
 
             if (chckForUser.lName !== lName) {
                 count += 1;
-                var updatedInfo = await usercol.updateOne(
-                    { _id: ObjectId(chckForUser._id) },
-                    { $set: { lastName: lName } }
-                );
+                var updatedInfo = await usercol.updateOne({ _id: ObjectId(chckForUser._id) }, { $set: { lastName: lName } });
             }
 
             if (chckForUser.dob !== dob) {
                 count += 1;
-                var updatedInfo = await usercol.updateOne(
-                    { _id: ObjectId(chckForUser._id) },
-                    { $set: { dob: dob } }
-                );
+                var updatedInfo = await usercol.updateOne({ _id: ObjectId(chckForUser._id) }, { $set: { dob: dob } });
             }
 
             if (chckForUser.isPublic !== isPublic) {
                 count += 1;
-                var updatedInfo = await usercol.updateOne(
-                    { _id: ObjectId(chckForUser._id) },
-                    { $set: { isPublic: isPublic } }
-                );
+                var updatedInfo = await usercol.updateOne({ _id: ObjectId(chckForUser._id) }, { $set: { isPublic: isPublic } });
             }
 
             if (chckForUser.imagePath !== imagePath) {
                 count += 1;
-                var updatedInfo = await usercol.updateOne(
-                    { _id: ObjectId(chckForUser._id) },
-                    { $set: { profilePic: imagePath } }
-                );
+                var updatedInfo = await usercol.updateOne({ _id: ObjectId(chckForUser._id) }, { $set: { profilePic: imagePath } });
             }
 
             if (count > 0) {
                 return true;
-            }
-            else {
-                return false
+            } else {
+                return false;
             }
             return updatedInfo;
         } catch (e) {
@@ -196,7 +188,6 @@ module.exports = {
         user._id = user._id.toString();
         return JSON.stringify(user);
     },
-
 };
 const checkCreateUser = function checkCreateUser(user, pass) {
     if (!user) throw [400, `Please provide a username`];

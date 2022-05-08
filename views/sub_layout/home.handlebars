@@ -4,25 +4,26 @@
     <body>
 
         <!-- partial:index.partial.html -->
-        <a id="Meeting" href="/meeting">
-            <div class="split-pane col-xs-12 col-sm-6 uiux-side">
-                <div>
-                    <div class="text-content">
-                        <div class="bold">You want</div>
-                        <div class="big">Create a meet?</div>
-                    </div>
-                    <!-- <button>Create</button> -->
+        
+        <div class="split-pane col-xs-12 col-sm-6 uiux-side">
+            <div>
+                <div class="text-content">
+                    <div class="bold">You want</div>
+                    <div class="big">Create a meet?</div>
                 </div>
+                <a id="Meeting" href="/meeting">
+                    <button>Create a Meeting</button>
+                </a>
             </div>
-        </a>
+        </div>
         <!-- <a id="Meeting" href="/meeting"> -->
-        <div class="split-pane col-xs-12 col-sm-6 frontend-side" id="myBtn" style="cursor: pointer">
+        <div class="split-pane col-xs-12 col-sm-6 frontend-side" >
             <div>
                 <div class="text-content">
                     <div class="bold">You want</div>
                     <div class="big">Join a Meet?</div>
                 </div>
-                <!-- <button >Join</button> -->
+                 <button id="myBtn" style="cursor: pointer">Join Meeting</button>
             </div>
         </div>
         <!-- </a> -->
@@ -31,7 +32,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <span class="close">&times;</span>
-                    <h2>Join Meet</h2>
+                    <h1>Join Meet</h1>
                 </div>
                 <div class="modal-body">
                     <form action="/join" method="post">
@@ -58,7 +59,7 @@
             </div>
         </div>
         <div class="split-pane-line">
-            <img src="https://cdn6.f-cdn.com/contestentries/1683444/34515331/5de674acef4c4_thumb900.jpg" style="border-radius: 50%" />
+            <img src="https://cdn6.f-cdn.com/contestentries/1683444/34515331/5de674acef4c4_thumb900.jpg" style="border-radius: 50%" alt="Image description"/>
         </div>
         <script src="/public/js/modal.js"></script>
     </body>
@@ -72,13 +73,12 @@
         <!-- partial:index.partial.html -->
 
         <!-- <a id="Meeting" href="/meeting"> -->
-        <div class="split-pane col-xs-12 col-sm-6 frontend-side" id="myBtn" style="cursor: pointer">
+        <div class="split-pane col-xs-12 col-sm-6 frontend-side" >
             <div>
                 <div class="text-content">
-                    <div class="bold">You want</div>
+                    <div class="bold" style="background-color: #0075e2;">You want</div>
                     <div class="big">Join a Meet?</div>
                 </div>
-                <!-- <button >Join</button> -->
             </div>
         </div>
         <!-- </a> -->
@@ -114,7 +114,7 @@
             </div>
         </div>
         <div class="split-pane-line">
-            <img src="https://cdn6.f-cdn.com/contestentries/1683444/34515331/5de674acef4c4_thumb900.jpg" style="border-radius: 50%" />
+            <img src="https://cdn6.f-cdn.com/contestentries/1683444/34515331/5de674acef4c4_thumb900.jpg" style="border-radius: 50%" alt="Image description"/>
         </div>
         <script src="/public/js/modal.js"></script>
     </body>
