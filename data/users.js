@@ -32,7 +32,7 @@ module.exports = {
                     role: userType,
                     isPublic: false,
                     dob: dob,
-                    meetings: [],
+                    meetings: []
                 };
                 const addUser = await usercol.insertOne(newUser);
                 if (addUser) {
@@ -69,7 +69,7 @@ module.exports = {
         }
     },
 
-    async editUser(username, fName, lName, dob, isPublic, imagePath=null) {
+    async editUser(username, fName, lName, dob, isPublic, imagePath = null) {
         try {
             var count = 0;
             const usercol = await userCollection();
@@ -118,8 +118,6 @@ module.exports = {
                 );
             }
 
-            console.log(await this.getUser(username));
-
             if (count > 0) {
                 return true;
             }
@@ -127,8 +125,8 @@ module.exports = {
                 return false
             }
             return updatedInfo;
-        }catch(e){
-            console.log("err:",e);
+        } catch (e) {
+            console.log("err:", e);
             throw e;
         }
     },
@@ -154,6 +152,22 @@ module.exports = {
         } catch (e) {
             throw e;
         }
+    },
+
+    async getMeetParticipants(usernameArr) {
+
+        const userArr = [];
+
+        for (let i = 0; i < usernameArr.length; i++) {
+
+            const user = await this.getUser(usernameArr[i]);
+
+            userArr.push(user);
+
+        }
+
+        return userArr;
+
     },
 
     async getUser(username) {

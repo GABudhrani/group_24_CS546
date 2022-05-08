@@ -24,7 +24,8 @@ showChat.addEventListener("click", () => {
 });
 
 showParticipants.addEventListener("click", () => {
-    alert("Hello\nHow are you?");
+    var redirectWindow = window.open('/showParticipants', '_blank');
+    redirectWindow.location;
 });
 
 const user = document.getElementById("room").getAttribute("usernameJ");
@@ -158,5 +159,9 @@ socket.on("createMessage", (message, userName) => {
         <span>${message}</span>
     </div>`;
 });
+
+window.onbeforeunload = function(){
+    // Do something
+ }
 
 
