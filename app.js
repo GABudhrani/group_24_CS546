@@ -12,6 +12,9 @@ const peerServer = ExpressPeerServer(server, {
     debug: true,
 });
 
+//const userRoutes = require("./routes/usets");
+const meetData = require("./data/meeting");
+
 app.use("/peerjs", peerServer);
 const configRoutes = require("./routes");
 const exphbs = require("express-handlebars");
@@ -43,6 +46,7 @@ app.use(async (req, res, next) => {
     }
     next();
 });
+
 app.use("/home", (req, res, next) => {
     if (req.session.user) {
         next();
@@ -98,6 +102,16 @@ io.on("connection", (socket) => {
         });
         socket.on("disconnecting", (reason) => {
             socket.to(roomId).emit("user-disconnected", userId);
+
+            const main = async () => {
+                console.log("main");
+                try {
+                    console.log(roomId);
+                    console.log(roomId);
+                    const meetObj = await meetData.removeParticipantFromMeet(roomId, userName);
+                } catch (e) {}
+            };
+            main();
         });
     });
 });

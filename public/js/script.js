@@ -26,7 +26,8 @@ showChat.addEventListener("click", () => {
 });
 
 showParticipants.addEventListener("click", () => {
-    alert("Hello\nHow are you?");
+    var redirectWindow = window.open('/showParticipants', '_blank');
+    redirectWindow.location;
 });
 // let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
 
@@ -197,6 +198,7 @@ socket.on("createMessage", (message, userName) => {
         <span>${message}</span>
     </div>`;
 });
+
 function tempAlert(msg, duration) {
     var el = document.createElement("div");
     el.setAttribute("style", "position:absolute;top:40%;left:20%;background-color:white;");
@@ -207,4 +209,3 @@ function tempAlert(msg, duration) {
     document.body.appendChild(el);
 }
 
-// socket.emit("merged", audioName.split(".")[0] + "-merged.webm");
