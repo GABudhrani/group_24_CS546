@@ -33,7 +33,7 @@
                     <span class="input-icon input-icon-password" data-password><i class="fa-solid fa-eye"></i></span>
                 </label>
                 <label class="inp">
-                <input type="tel" class="input-text" placeholder="&nbsp;" name="phonenumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required>
+                <input type="tel" class="input-text" placeholder="&nbsp;" id="phonenumber" name="phonenumber" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required>
                 <span class="label" style="color: #767676 ;">Phone</span>
                 <span class="input-icon"><i class="fa-solid fa-mobile-screen-button"></i></span>
                 </label>
@@ -64,6 +64,45 @@
             <h1 class="heading-secondary">Welcome to <span class="lg">Boom Video Chat!</span></h1>
         </div>
     </div>
+    <script>
+function checkForm(form){
+    
+    if(this.fName.value == "" || this.fName.value.trim()== "") {
+      alert("Please Enter Valid First Name");
+      this.fName_elem.focus();
+      return false;
+    }
+    
+    if(this.lName.value == "" || this.lName.value.trim()== "") {
+      alert("Please Enter Valid LastName");
+      this.lName_elem.focus();
+      return false;
+    }
+
+    if(this.email.value == "" || this.email.value.trim()== "") {
+      alert("Please Enter Valid Email");
+      this.email_elem.focus();
+      return false;
+    }
+
+    if(this.username.value == "" || this.username.value.trim()== "") {
+      alert("Please Enter Valid UserName");
+      this.username_elem.focus();
+      return false;
+    }
+    if(this.password.value == "" || !this.valid_password.checked) {
+      alert("Please Enter Password");
+      this.password_elem.focus();
+      return false;
+    }
+
+    if(this.phonenumber.value == "" || this.username.value.trim()== "") {
+      alert("Please Enter Valid PhoneNumber");
+      this.phonenumber_elem.focus();
+      return false;
+    }
+  }
+</script>
     <script>
         const eyeClick = document.querySelector("[data-password]"); const password_elem = document.getElementById("password"); eyeClick.onclick = () => { const icon = eyeClick.children[0];
         icon.classList.toggle("fa-eye-slash"); if (password_elem.type === "password") { password_elem.type = "text"; } else if (password_elem.type === "text") { password_elem.type = "password"; } };
