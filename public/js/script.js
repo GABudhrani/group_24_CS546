@@ -26,7 +26,7 @@ showChat.addEventListener("click", () => {
 });
 
 showParticipants.addEventListener("click", () => {
-    var redirectWindow = window.open('/showParticipants', '_blank');
+    var redirectWindow = window.open("/showParticipants", "_blank");
     redirectWindow.location;
 });
 // let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -185,7 +185,7 @@ function leaveMeet() {
 
 inviteButton.addEventListener("click", (e) => {
     url = window.location.href.split("/");
-    str = "Website:- https://joinuser.herokuapp.com/" + "\n" + "Meet id:- " + url[4] + "\npasscode:- " + url[5];
+    str = "Website:- https://boomgroup24.herokuapp.com/" + "\n" + "Meet id:- " + url[4] + "\npasscode:- " + url[5];
     prompt("Copy to clipboard: Ctrl+C, Enter", str);
     // alert(str);
 });
@@ -208,4 +208,3 @@ function tempAlert(msg, duration) {
     }, duration);
     document.body.appendChild(el);
 }
-
