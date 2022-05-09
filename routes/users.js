@@ -19,11 +19,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.get("/", async (req, res) => {
+router.get("/", async(req, res) => {
     res.render("sub_layout/intro");
 });
 
-router.get("/login", async (req, res) => {
+router.get("/login", async(req, res) => {
     if (req.session.user) {
         return res.redirect("/home");
     } else {
@@ -31,7 +31,7 @@ router.get("/login", async (req, res) => {
     }
 });
 
-router.get("/home", async (req, res) => {
+router.get("/home", async(req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     } else {
@@ -42,7 +42,7 @@ router.get("/home", async (req, res) => {
         }
     }
 });
-router.get("/meeting", async (req, res) => {
+router.get("/meeting", async(req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     } else {
@@ -63,7 +63,7 @@ router.get("/meeting", async (req, res) => {
     }
 });
 
-router.post("/join", async (req, res) => {
+router.post("/join", async(req, res) => {
     if (!req.session.user) {
         return res.redirect("/");
     } else {
@@ -92,7 +92,7 @@ router.post("/join", async (req, res) => {
     }
 });
 
-router.get("/meeting/:room/:pass", async (req, res) => {
+router.get("/meeting/:room/:pass", async(req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     } else {
@@ -103,7 +103,7 @@ router.get("/meeting/:room/:pass", async (req, res) => {
             if (chckMeet.authenticated) {
                 const addUserToMeet = await meetData.updateMeet(meetId, req.session.user.Username);
 
-                
+
 
                 req.session.user.meetId = meetId;
 
@@ -133,7 +133,7 @@ router.get("/meeting/:room/:pass", async (req, res) => {
 
 
 
-router.post("/login", async (req, res) => {
+router.post("/login", async(req, res) => {
     try {
         let username = xss(req.body.username);
         let password = xss(req.body.password);
@@ -170,7 +170,7 @@ router.post("/login", async (req, res) => {
     }
 });
 
-router.get("/signup", async (req, res) => {
+router.get("/signup", async(req, res) => {
     if (req.session.user) {
         return res.redirect("/home");
     } else {
@@ -178,7 +178,7 @@ router.get("/signup", async (req, res) => {
     }
 });
 
-router.post("/signup", async (req, res) => {
+router.post("/signup", async(req, res) => {
     try {
         let usernameSign = xss(req.body.username);
         let passwordSign = xss(req.body.password);
@@ -194,12 +194,7 @@ router.post("/signup", async (req, res) => {
         if (adduser.userInserted) {
             return res.redirect("/home");
         } else {
-<<<<<<< HEAD
             res.status(400).render("sub_layout/signup"), {
-=======
-            res.status(400).render("sub_layout/signup"),
-            {
->>>>>>> 5badd2c91d50c6db275a4ed039b45741fd55dd7d
                 hasErrors: true,
                 error: "Error Occured",
                 title: "Signup",
@@ -216,7 +211,7 @@ router.post("/signup", async (req, res) => {
     }
 });
 
-router.get("/profile", async (req, res) => {
+router.get("/profile", async(req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     } else {
@@ -238,7 +233,7 @@ router.get("/profile", async (req, res) => {
     }
 });
 
-router.get("/editprofile", async (req, res) => {
+router.get("/editprofile", async(req, res) => {
     if (!req.session.user) {
         return res.redirect("/login");
     } else {
@@ -249,11 +244,11 @@ router.get("/editprofile", async (req, res) => {
                 lastName: getUser.lastName,
                 dob: getUser.dob,
             });
-        } catch (e) { }
+        } catch (e) {}
     }
 });
 
-router.post("/editprofile", upload.single("profilePic"), async (req, res) => {
+router.post("/editprofile", upload.single("profilePic"), async(req, res) => {
     console.log("file route:", req.file);
     try {
         let fname1 = xss(req.body.firstName);
@@ -296,12 +291,7 @@ router.post("/signup", async(req, res) => {
         if (adduser.userInserted) {
             return res.redirect("/home");
         } else {
-<<<<<<< HEAD
             res.status(400).render("sub_layout/signup"), {
-=======
-            res.status(400).render("sub_layout/signup"),
-            {
->>>>>>> 5badd2c91d50c6db275a4ed039b45741fd55dd7d
                 hasErrors: true,
                 error: "Error Occured",
                 title: "Signup",
@@ -317,9 +307,7 @@ router.post("/signup", async(req, res) => {
     }
 });
 
-<<<<<<< HEAD
-=======
-router.get("/showParticipants", async (req, res) => {
+router.get("/showParticipants", async(req, res) => {
     if (!req.session.user) {
         return res.redirect("/");
     } else {
@@ -329,8 +317,6 @@ router.get("/showParticipants", async (req, res) => {
     }
 });
 
-
->>>>>>> 5badd2c91d50c6db275a4ed039b45741fd55dd7d
 const checkCreateUser = function checkCreateUser(user, pass) {
     if (!user) throw [400, `Please provide a username`];
     if (!pass) throw [400, `Please provide a passowrd`];
@@ -344,9 +330,6 @@ const checkCreateUser = function checkCreateUser(user, pass) {
     if (pass.length < 6) throw [400, `Please enter a valid password(atleast 6 characters long)`];
 };
 
-<<<<<<< HEAD
 module.exports = router;
-=======
 
 module.exports = router;
->>>>>>> 5badd2c91d50c6db275a4ed039b45741fd55dd7d
