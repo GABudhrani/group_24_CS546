@@ -25,6 +25,9 @@ module.exports = {
             };
             const addMeet = await meetcol.insertOne(newMeet);
 
+            const newMeet2 = await this.getMeet(meetId);
+            console.log(newMeet2);
+
             if (addMeet) {
                 return { meetCreated: true };
             } else {
@@ -60,9 +63,14 @@ module.exports = {
 
     async removeParticipantFromMeet(meetIdValue, participantUsername) {
 
+        console.log('removeParticipantFromMeet');
         try {
+            console.log(meetIdValue);
+            console.log(participantUsername);
             const meetcol = await meetCollection();
             const chckForMeet = await meetcol.findOne({ meetId: meetIdValue });
+
+            console.log(chckForMeet);
     
             if (chckForMeet) {    
                 const updatedInfo = await meetcol.updateOne(

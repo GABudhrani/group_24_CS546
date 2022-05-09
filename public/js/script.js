@@ -198,6 +198,7 @@ socket.on("createMessage", (message, userName) => {
         <span>${message}</span>
     </div>`;
 });
+
 function tempAlert(msg, duration) {
     var el = document.createElement("div");
     el.setAttribute("style", "position:absolute;top:40%;left:20%;background-color:white;");
@@ -208,9 +209,3 @@ function tempAlert(msg, duration) {
     document.body.appendChild(el);
 }
 
-window.onbeforeunload = function(){
-    // Do something
- }
-
-
-// socket.emit("merged", audioName.split(".")[0] + "-merged.webm");
