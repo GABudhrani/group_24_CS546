@@ -91,6 +91,13 @@ app.use("/profile", (req, res, next) => {
         return res.status(403).render("sub_layout/login", { title: "Login", error: "Please enter Credentials first" });
     }
 });
+app.use("/showParticipants", (req, res, next) => {
+    if (req.session.user) {
+        next();
+    } else {
+        return res.status(403).render("sub_layout/login", { title: "Login", error: "Please enter Credentials first" });
+    }
+});
 
 configRoutes(app);
 io.on("connection", (socket) => {

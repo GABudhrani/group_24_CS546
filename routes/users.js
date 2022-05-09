@@ -76,7 +76,7 @@ router.post("/join", async (req, res) => {
       meetId = xss(req.body.room);
       meetPass = xss(req.body.pass);
       const chckMeet = await meetData.checkMeet(meetId, meetPass);
-      
+
       if (chckMeet.authenticated) {
         res.redirect(`/meeting/${meetId}/${meetPass}`);
       } else {
@@ -341,18 +341,11 @@ router.post("/signup", async (req, res) => {
 });
 
 router.get("/showParticipants", async (req, res) => {
-    console.log("======================");
   if (!req.session.user) {
-    console.log("////////////////////////");
     return res.redirect("/home");
   } else {
     try {
-        console.log("-------------------------");
-        console.log(req.session.user.meetId);
       const meetObj = await meetData.getMeet(req.session.user.meetId);
-
-      console.log(meetObj);
-      console.log(meetObj.participants);
 
       if (meetObj.participants.length > 0) {
         const usersList = await usersData.getMeetParticipants(
