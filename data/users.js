@@ -3,6 +3,8 @@ const mongoCollections = require("../config/mongoCollections");
 const userCollection = mongoCollections.user;
 const bcrypt = require("bcryptjs");
 const saltRound = 16;
+const validations = require("../validations");
+
 module.exports = {
     async createUser(username, password, email, fName, lName, userType, phonenumber, dob) {
         try {
@@ -12,6 +14,11 @@ module.exports = {
             password = password.trim();
             phonenumber = phonenumber.trim();
             email = email.trim();
+            username = validations.checkField("username", username);
+            fName = validations.checkField("First Name", fName);
+            lName = validations.checkField("Last Name", lName);
+            password = validations.checkPassword(password);
+            email = validations.checkEmail(email);
 
             const usercol = await userCollection();
             const chckForUser = await usercol.findOne({ username: username });
@@ -45,7 +52,7 @@ module.exports = {
                     const newUserr = await this.get(newId);
                     return { userInserted: true };
                 } else {
-                    throw [400, "Couldn't add username"];
+                    throw [400, "Error: Couldn't add username"];
                 }
             }
         } catch (e) {
@@ -125,10 +132,9 @@ module.exports = {
 
     async checkUser(username, password) {
         try {
-            checkCreateUser(username, password);
-            username = username.trim();
-            username = username.toLowerCase();
-            password = password.trim();
+            username = validations.checkField("username", username);
+            password = validations.checkPassword(password);
+
             const usercol = await userCollection();
             const chckForUser = await usercol.findOne({ username: username });
             if (chckForUser) {
@@ -176,7 +182,7 @@ module.exports = {
         }
     },
 
-    async get(id) {
+    asyncget(id) {
         if (!id) throw "You must provide an id to search for";
         if (typeof id !== "string") throw "Id must be a string";
         if (id.trim().length === 0) throw "Id cannot be an empty string or just spaces";
@@ -200,4 +206,4 @@ const checkCreateUser = function checkCreateUser(user, pass) {
     if (!pass.replace(/\s/g, "").length) throw [400, `Please don't pass white spaces in password`];
     if (/\s/.test(pass)) throw [400, `Please input only charaters in an Password`];
     if (pass.length < 6) throw [400, `Please enter a valid password(atleast 4 characters long)`];
-};
+}

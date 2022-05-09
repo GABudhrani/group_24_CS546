@@ -3,6 +3,7 @@
         <main class="login-container">
             <p class="text-mute" style="color: #767676 ;">START FOR FREE</p>
             <h1 class="heading-primary">Create new account<span class="custom-dot">.</span></h1>
+<<<<<<< HEAD
             <p class="text-mute" style="color: #767676 ;">Already A Member? <a href="/login">Log in</a></p>
             <form class="login-form" method="POST" id="login-form" action="signup">
                 <div class="f-row input-wrapper">
@@ -14,10 +15,27 @@
                     <label class="inp">
                         <input type="text" class="input-text" placeholder="&nbsp;" name="lName" id="lName" required />
                         <span class="label" style="color: #767676 ;">Last name</span>
+=======
+            <p class="text-mute">Already A Member? <a href="/login">Log in</a></p>
+            {{#if hasErrors}}
+                <p class="bar error">{{error}}</p>
+            {{/if}}
+            <form class="login-form" method="POST" id="login-form" action="signup">
+                <div class="f-row input-wrapper">
+                    <label class="inp">
+                        <input type="text" class="input-text" placeholder="&nbsp;" name="fName" id="fName"  />
+                        <span class="label">First name</span>
+                        <span class="input-icon"><i class="fa-solid fa-address-card"></i></span>
+                    </label>
+                    <label class="inp">
+                        <input type="text" class="input-text" placeholder="&nbsp;" name="lName" id="lName" />
+                        <span class="label">Last name</span>
+>>>>>>> f5e44dd03cef74b1f80afe4413f0bc899631b1e5
                         <span class="input-icon"><i class="fa-solid fa-address-card"></i></span>
                     </label>
                 </div>
                 <label class="inp">
+<<<<<<< HEAD
                     <input type="email" class="input-text" placeholder="&nbsp;" id="email" name="email" required />
                     <span class="label" style="color: #767676 ;">Email</span>
                     <span class="input-icon"><i class="fa-solid fa-envelope"></i></span>
@@ -30,6 +48,20 @@
                 <label class="inp">
                     <input type="password" class="input-text" placeholder="&nbsp;" name="password" id="password" required />
                     <span class="label" style="color: #767676 ;">Password</span>
+=======
+                    <input type="email" class="input-text" placeholder="&nbsp;" id="email" name="email" />
+                    <span class="label">Email</span>
+                    <span class="input-icon"><i class="fa-solid fa-envelope"></i></span>
+                </label>
+                <label class="inp">
+                    <input type="text" class="input-text" placeholder="&nbsp;" name="username" id="username" />
+                    <span class="label">Username</span>
+                    <span class="input-icon"><i class="fa-solid fa-user"></i></span>
+                </label>
+                <label class="inp">
+                    <input type="password" class="input-text" placeholder="&nbsp;" name="password" id="password" />
+                    <span class="label">Password</span>
+>>>>>>> f5e44dd03cef74b1f80afe4413f0bc899631b1e5
                     <span class="input-icon input-icon-password" data-password><i class="fa-solid fa-eye"></i></span>
                 </label>
                 <label class="inp">
@@ -56,9 +88,6 @@
                 
                 <button class="btn btn-login" style="background-color: #007aca;">Create account</button>
             </form>
-            {{#if hasErrors}}
-                <p>{{error}}</p>
-            {{/if}}
         </main>
         <div class="welcome-container">
             <h1 class="heading-secondary">Welcome to <span class="lg">Boom Video Chat!</span></h1>
