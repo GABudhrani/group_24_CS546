@@ -37,7 +37,7 @@ module.exports = {
                     role: userType,
                     isPublic: false,
                     dob: dob,
-                    meetings: [],
+                    meetings: []
                 };
                 const addUser = await usercol.insertOne(newUser);
                 if (addUser) {
@@ -111,8 +111,6 @@ module.exports = {
                 var updatedInfo = await usercol.updateOne({ _id: ObjectId(chckForUser._id) }, { $set: { profilePic: imagePath } });
             }
 
-            console.log(await this.getUser(username));
-
             if (count > 0) {
                 return true;
             } else {
@@ -146,6 +144,22 @@ module.exports = {
         } catch (e) {
             throw e;
         }
+    },
+
+    async getMeetParticipants(usernameArr) {
+
+        const userArr = [];
+
+        for (let i = 0; i < usernameArr.length; i++) {
+
+            const user = await this.getUser(usernameArr[i]);
+
+            userArr.push(user);
+
+        }
+
+        return userArr;
+
     },
 
     async getUser(username) {

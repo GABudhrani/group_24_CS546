@@ -128,7 +128,7 @@ video {
     justify-content: center;
 }
 
-.main__message_container > input {
+.main__message_container>input {
     height: 50px;
     flex: 1;
     font-size: 1rem;
@@ -194,12 +194,10 @@ video {
         width: 100%;
         flex: 1;
     }
-
     video {
         height: auto;
         width: 100%;
     }
-
     #showChat {
         display: flex;
     }
@@ -210,6 +208,7 @@ video {
     padding: 0;
     box-sizing: border-box;
 }
+
 html {
     font-size: 62.5%;
 }
@@ -221,6 +220,7 @@ body {
     font-size: 1.6rem;
     overflow-x: hidden;
 }
+
 a {
     color: #007aca;
     text-decoration: none;
@@ -231,15 +231,19 @@ a {
     grid-template-rows: minmax(min-content, 100vh);
     grid-template-columns: repeat(2, 50vw);
 }
+
 .heading-secondary {
     font-size: 3rem;
 }
+
 .heading-primary {
     font-size: 5rem;
 }
+
 .span-blue {
     color: #2196f3;
 }
+
 .login-container,
 .login-form {
     display: flex;
@@ -251,7 +255,6 @@ a {
     padding: 10rem 10rem;
     align-items: flex-start;
     justify-content: flex-start;
-
     grid-column: 1 / 2;
     grid-row: 1;
 }
@@ -304,14 +307,12 @@ a {
 }
 .label {
     pointer-events: none;
-
     position: absolute;
     top: 2rem;
     left: 2rem;
     color: #00000070;
     font-weight: 500;
     font-size: 1.8rem;
-
     transition: all 0.2s;
     transform-origin: left;
 }
@@ -340,11 +341,9 @@ a {
     background: #fff;
     border: solid 1px #eee;
     padding: 1.5rem;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     box-shadow: 0 1px 2px #00000020;
 }
 
@@ -367,7 +366,6 @@ a {
     justify-content: center;
     align-items: center;
     color: #ccc;
-
     margin: 3rem 0;
 }
 .line-breaker span:nth-child(2) {
@@ -538,8 +536,10 @@ a {
     font-size: 12px;
     color: #62717a;
     text-shadow: 0 1px white;
-    background: #f2f2f2; /* Fallback for IE 8 */
-    background: rgba(0, 0, 0, 0) !important; /* "transparent" doesn't work with Opera */
+    background: #f2f2f2;
+    /* Fallback for IE 8 */
+    background: rgba(0, 0, 0, 0) !important;
+    /* "transparent" doesn't work with Opera */
     border: 0;
     border-radius: 0;
     -webkit-appearance: none;
@@ -724,4 +724,20 @@ a {
 
 .circular-menu.circular-menu-left.active .menu-item:nth-child(4) {
     transform: translate3d(7em, 1em, 0);
+}
+
+.profile-container,
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.profile-container {
+    width: 100vw;
+    padding: 10rem 10rem;
+    align-items: center;
+    justify-content: flex-start;
+    grid-column: 1 / 2;
+    grid-row: 1;
 }

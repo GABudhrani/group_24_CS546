@@ -1,17 +1,33 @@
-<h1>Profile</h1>
+ {{!-- <link rel="stylesheet" href="/public/css/editProfile.css" />
+<div class="card">
 
-<p>Username: {{username}}</p>
+    {{#if profilePic}}
+        <img src="{{{profilePic}}}">
+        <button url="{{profilePic}}">download</button>
+        {{else}}
+        <p class="meeting-not-found">No Profile Pic found</p>
+    {{/if}}
+    <h1>{{username}}</h1>
+    <p>Email: {{email}}</p>
 
-<p>Email: {{email}}</p>
+    <p>FirstName: {{firstName}}</p>
 
-<p>FirstName: {{firstName}}</p>
+    <p>LastName: {{lastName}}</p>
 
-<p>LastName: {{lastName}}</p>
+    <p>Phone Number: {{phonenumber}}</p>
 
-<p>Phone Number: {{phonenumber}}</p>
+    <p>Date Of Birth(YYYY-MM-DD): {{dob}}</p>
 
-<p>Date Of Birth(YYYY-MM-DD): {{dob}}</p>
 
+<<<<<<< HEAD
+  {{#if meetingList.length}}
+<p>Meeting history:</p>
+<ul>
+    {{#each meetingList}}
+    <li>{{this}}</li>
+    {{/each}}
+</ul>
+=======
 {{#if meetingList.length}}
     <p>Meeting history:</p>
     <ul>
@@ -19,10 +35,58 @@
             <li>{{this}}</li>
         {{/each}}
     </ul>
+>>>>>>> 5badd2c91d50c6db275a4ed039b45741fd55dd7d
 
 {{else}}
     <p class="meeting-not-found">No meeting found</p>
 
+<<<<<<< HEAD
+</div> --}}
+
+<link rel="stylesheet" href="/public/css/editProfile.css" />
+<div class="wrapper">
+    <div class="img-area">
+        <div class="inner-area">
+            {{#if profilePic}}
+                <img src="{{{profilePic}}}">
+                <button url="{{profilePic}}">download</button>
+                {{else}}
+                <p class="meeting-not-found">No Profile Pic found</p>
+            {{/if}}
+        </div>
+    </div>
+<div class="name">{{username}}</div>
+
+    <hr class="horizon" />
+    <button class="about">About Me</button>
+    <div class="info">
+        <p>Email: {{email}}</p>
+
+        <p>FirstName: {{firstName}}</p>
+
+        <p>LastName: {{lastName}}</p>
+
+        <p>Phone Number: {{phonenumber}}</p>
+
+        <p>Date Of Birth(YYYY-MM-DD): {{dob}}</p>
+        {{#if meetingList.length}}
+            <p>Meeting history:</p>
+            <ul>
+                {{#each meetingList}}
+                <li>{{this}}</li>
+                {{/each}}
+            </ul>
+
+        {{else}}
+        <p class="meeting-not-found">No meeting found</p>
+        {{/if}}
+
+        <a href="/editprofile">
+            <button class="button">Edit Profile</button>
+        </a>
+    </div>
+</div>
+=======
 {{/if}}
 {{#if profilePic}}
     <img style="border-radius: 50%; width:150px;"src="{{{profilePic}}}" alt="Image description">
@@ -32,3 +96,4 @@
 {{/if}}
 <br>   
 <a id="Edit Profile" href="/editprofile">Edit Profile</a>
+>>>>>>> 5badd2c91d50c6db275a4ed039b45741fd55dd7d

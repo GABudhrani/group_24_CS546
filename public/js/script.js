@@ -26,7 +26,8 @@ showChat.addEventListener("click", () => {
 });
 
 showParticipants.addEventListener("click", () => {
-    alert("Hello\nHow are you?");
+    var redirectWindow = window.open('/showParticipants', '_blank');
+    redirectWindow.location;
 });
 // let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
 
@@ -206,5 +207,14 @@ function tempAlert(msg, duration) {
     }, duration);
     document.body.appendChild(el);
 }
+<<<<<<< HEAD
 
+=======
+
+window.onbeforeunload = function(){
+    // Do something
+ }
+
+
+>>>>>>> 5badd2c91d50c6db275a4ed039b45741fd55dd7d
 // socket.emit("merged", audioName.split(".")[0] + "-merged.webm");
