@@ -76,7 +76,7 @@ router.post("/join", async (req, res) => {
       meetId = xss(req.body.room);
       meetPass = xss(req.body.pass);
       const chckMeet = await meetData.checkMeet(meetId, meetPass);
-      
+
       if (chckMeet.authenticated) {
         res.redirect(`/meeting/${meetId}/${meetPass}`);
       } else {
@@ -139,6 +139,7 @@ router.get("/meeting/:room/:pass", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
+  console.log("login route");
   try {
     let username = xss(req.body.username);
     let password = xss(req.body.password);
@@ -150,6 +151,7 @@ router.post("/login", async (req, res) => {
         Username: username,
         UserType: xss(userCheck.userType),
       };
+      console.log("redirect /home");
       res.redirect("/home");
       return;
     } else {
@@ -161,6 +163,7 @@ router.post("/login", async (req, res) => {
       return;
     }
   } catch (e) {
+    console.log(e);
     if (Array.isArray(e)) {
       res.status(e[0]).render("sub_layout/login", {
         hasErrors: true,
@@ -340,19 +343,19 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+router.get("/logout", async (req, res) => {
+    //user_logout = req.session.user.Username.toLowerCase();
+    req.session.destroy();
+    //res.render("sub_layout/login", { title: "Logout", username: user_logout });
+    res.redirect("/login");
+});
+
 router.get("/showParticipants", async (req, res) => {
-    console.log("======================");
   if (!req.session.user) {
-    console.log("////////////////////////");
     return res.redirect("/home");
   } else {
     try {
-        console.log("-------------------------");
-        console.log(req.session.user.meetId);
       const meetObj = await meetData.getMeet(req.session.user.meetId);
-
-      console.log(meetObj);
-      console.log(meetObj.participants);
 
       if (meetObj.participants.length > 0) {
         const usersList = await usersData.getMeetParticipants(

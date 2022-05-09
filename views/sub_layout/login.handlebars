@@ -11,16 +11,16 @@
             {{/if}}
             <form class="login-form" action="/login" method="post" id="login-form">
                 <label class="inp">
-                    <input type="text" class="input-text" placeholder="&nbsp;" name="username" id="username" />
+                    <input type="text" class="input-text" placeholder="&nbsp;" name="username" id="login-username" />
                     <span class="label" style="color: #767676 ;">Username</span>
                     <span class="input-icon"><i class="fa-solid fa-user"></i></span>
                 </label>
                 <label class="inp">
-                    <input type="password" class="input-text" placeholder="&nbsp;" id="password" name="password" />
+                    <input type="password" class="input-text" placeholder="&nbsp;" id="login-password" name="password" />
                     <span class="label" style="color: #767676 ;">Password</span>
                     <span class="input-icon input-icon-password" data-password><i class="fa-solid fa-eye"></i></span>
                 </label>
-                <button type="submit" class="btn btn-login" style="background-color: #007aca ;">Login</button>
+                <button type="submit" id="loginBtn" class="btn btn-login" style="background-color: #007aca ;">Login</button>
             </form>
             <p class="text-mute" style="color: #767676 ;">Not a member? <a href="/signup">Sign up</a></p>
         </main>
@@ -52,4 +52,5 @@
         const eyeClick = document.querySelector("[data-password]"); const password_elem = document.getElementById("password"); eyeClick.onclick = () => { const icon = eyeClick.children[0];
         icon.classList.toggle("fa-eye-slash"); if (password_elem.type === "password") { password_elem.type = "text"; } else if (password_elem.type === "text") { password_elem.type = "password"; } };
     </script>
+    <script src="/public/js/login.js"></script>
 </body>
